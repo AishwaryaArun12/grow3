@@ -1,0 +1,5 @@
+{
+    "ambientDependencies": {
+      "express-session": "registry:dt/express-session#1.0.0+20160412163734"
+    }
+  }

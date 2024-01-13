@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "types": ["express-session"],
+        "module": "CommonJS",
+        "baseUrl": "./src",
+        "outDir": "./dist",
+        "sourceMap": true,
+        "noImplicitAny": true,
+        "esModuleInterop": true
+    },
+    "include": ["src/**/*" , "typings.d.ts"],
+    "exclude": ["node_modules"] 
+}
