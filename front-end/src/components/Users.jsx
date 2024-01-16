@@ -5,20 +5,36 @@ import { HiBan, HiCheck } from 'react-icons/hi';
 
 export default function Component() {
 
-    const [users,setUsers] = useState([]);
+  const [value ,setValue] = useState()
+  const [names,setNames ] = useState([]);
 
-    const getUsers = async ()=>{
-        try {
-           const res = await axios.get('/admin/getAllUsers')
-           setUsers(res.data.users)
-        } catch (error) {
-            console.log(error,'error');
-        }
+  const [users,setUsers] = useState([]);
+
+  const getUsers = async ()=>{
+      try {
+         const res = await axios.get('/admin/getAllUsers')
+         setUsers(res.data.users);
+         setNames(res.data.users);
+      } catch (error) {
+          console.log(error,'error');
+      }
+  }
+ useEffect(()=>{
+  getUsers();
+ },[])
+
+ 
+    const handleChange = (e)=>{
+      setValue(e.target.value);
+     if(e.target.value == ''){
+      setUsers(names);
+     }else{
+      const filterFunction = (user) => user.name.toLowerCase().startsWith(e.target.value.toLowerCase());
+      const filteredUserData = names?.filter(filterFunction);
+      setUsers(filteredUserData)
+     }
     }
-   useEffect(()=>{
-    getUsers();
-   },[])
-
+ 
    async function block (id){
     try {
         await axios.get(`/block/?id=${id}`)
@@ -36,6 +52,11 @@ export default function Component() {
     }
    }
   return (
+    <>
+    <div  className='mx-20 w-52 z-50 m-3 lg:mt-10  relative'>
+                  <input  value={value} onChange={handleChange}  placeholder='Find User....' className='h-10 dark:placeholder:text-gray-200 dark:bg-transparent  placeholder:text-gray-700 bg-gray:200 rounded-full  text-black dark:text-white w-full ml-1 p-2 shadow-md border-gray-500 border-2 ' />
+                 
+                </div>
     <div className="overflow-x-auto lg:m-16">
       <Table hoverable>
         <Table.Head>
@@ -73,5 +94,6 @@ export default function Component() {
         </Table.Body>
       </Table>
     </div>
+    </>
   );
 }

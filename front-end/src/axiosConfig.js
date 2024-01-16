@@ -46,7 +46,6 @@ instance.interceptors.response.use(
     },
     async (error) => {
         const originalRequest = error.config;
-    console.log(error.response.status , localStorage.getItem('resend')=== 'true' ,'object')
         if (error.response.status === 401 && localStorage.getItem('resend') == 'true') {
             originalRequest._retry = true;
             try {

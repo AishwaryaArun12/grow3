@@ -17,14 +17,18 @@ import UserProfile from './pages/UserProfile'
 import AdminUsers from './pages/AdminUsers'
 import AdminUserProfile from './pages/AdminUserProfile'
 import Subscription from './pages/Subscription'
+import AdminReport from './pages/AdminReport'
+import Chat from './pages/Chat'
 
 
 const App = () => {
+  const {setUser} = useContext(AuthContext)
+  const {getAllPosts} = useContext(postContext)
   useEffect(()=>{
-    axios.get('/getUser').then(res=>{setUser(res.data.user); getAllPosts()}).catch(err=>{
+    axios.get('/getUser').then(res=>{setUser(res?.data.user); }).catch(err=>{
       localStorage.removeItem('id')
       localStorage.removeItem('token')
-      if(err.response.status == 401){
+      if(err.response?.status == 401){
         window.location.href = '/login'
       }
     })
@@ -75,6 +79,12 @@ const App = () => {
       </Routes>
       <Routes>
         <Route exact path='/admin/subscription' element={<Subscription />}/>
+      </Routes>
+      <Routes>
+        <Route exact path='/admin/reports' element={<AdminReport />}/>
+      </Routes>
+      <Routes>
+        <Route exact path='/chat' element={<Chat />}/>
       </Routes>
        </Router>
       

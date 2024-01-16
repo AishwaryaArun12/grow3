@@ -1,3 +1,4 @@
+import { IReport } from "../domain/entities/reportEntity";
 import { IPost } from "../domain/entities/postEntity";
 import postRepository from "../infrastructure/repository/postRepository";
 
@@ -37,5 +38,8 @@ export default class postUseCase{
     }
     checkReport(id:string,userId:string):Promise<boolean | string>{
         return this.postRepository.checkReport(id,userId);
+    }
+    getAllReports():Promise<IReport[]>{
+        return this.postRepository.getAllReports();
     }
 }

@@ -13,6 +13,8 @@ import { HiPencil,HiLocationMarker,HiAcademicCap } from 'react-icons/hi';
 import { IoMailOutline, IoStar } from 'react-icons/io5';
 import { FaMoneyCheck, FaBriefcase } from 'react-icons/fa';
 import { AuthContext } from '../store/Auth';
+import Mutual from '../components/Mutual';
+import Connects from '../components/Connects';
 
 
 
@@ -25,6 +27,7 @@ const UserProfile = () => {
     const {id} = useParams();
     const [targetDiv, setTargetDiv] = useState('mydiv');
     const [foundInField,setFoundInField] = useState();
+ 
     const events = []
     useEffect(() => {
       // Check the window width and set the targetDiv accordingly
@@ -77,18 +80,18 @@ const UserProfile = () => {
         scroll.scrollToTop();
       };
 
-      const connection = async(foundInField)=>{
-        
+      const connection = async(foundInField,id)=>{
+       
         try {
           if(!foundInField){
-            await axios.patch('/edit_connection',{userId : localStorage.getItem('id'),requestId : user._id});
+            await axios.patch('/edit_connection',{userId : id,requestId : user._id});
            
           }else if(foundInField == 'followers'){
-            await axios.patch('/edit_connection',{userId : localStorage.getItem('id'),unfollowId : user._id})
+            await axios.patch('/edit_connection',{userId : id,unfollowId : user._id})
           }else if(foundInField == 'requests'){
-            await axios.patch('/edit_connection',{userId : localStorage.getItem('id'),confirmId : user._id})
+            await axios.patch('/edit_connection',{userId : id,confirmId : user._id})
           }else if(foundInField == 'pendings'){
-            await axios.patch('/edit_connection',{userId : localStorage.getItem('id'),takeId : user._id})
+            await axios.patch('/edit_connection',{userId : id,takeId : user._id})
           }
           userData();
         } catch (error) {
@@ -139,7 +142,7 @@ const UserProfile = () => {
                     />
                    
                   </div>
-                  <Button onClick={()=>{connection(foundInField)}} className='z-0 bg-gradient-to-br from-blue-900 via-black to-blue-900 m-1 hover:bg-black focus:ring-0'>{!foundInField ? 'Connect' : foundInField == 'followers' ? 'Connected' : foundInField == 'requests' ? 'Confirm Request' : 'Cancel Request'}</Button>
+                  <Button onClick={()=>{connection(foundInField,localStorage.getItem('id'))}} className='z-0 bg-gradient-to-br from-blue-900 via-black to-blue-900 m-1 hover:bg-black focus:ring-0'>{!foundInField ? 'Connect' : foundInField == 'followers' ? 'Connected' : foundInField == 'requests' ? 'Confirm Request' : 'Cancel Request'}</Button>
                   </div>
                   
                 </div>
@@ -280,40 +283,16 @@ const UserProfile = () => {
               )
              })}
               </div>
-             {buttons[0].current && userPosts.map((i,index)=>(<Post post={i} key={index}/>))}
+             {buttons[0].current && <div>
+              {userPosts.length != 0 ?  userPosts.map((i,index)=>(<Post post={i} key={index}/>)) : <p className=' text-center m-5'>No Posts Yet..</p>}
+              </div>}
              {buttons[1].current && <div>
-            {user.followers.length !=0 ? user.followers?.map(i=>{
-                 const mutual = authUser.followers.reduce((count, follower) => {
-                
-                    if (i.followers.some((followerId) => followerId._id === follower._id)) {
-                        return count + 1; 
-                    } else {
-                        return count; 
-                    }
-                }, 0);
-                const fields = ["followers", "requests", "pendings"];
-        
-       
-                const foundInField = fields.find(field =>
-                  i[field]?.some(item => item._id === localStorage.getItem('id'))
-                )     
-                return (
-                <div className='flex my-3'>
-                    <div className="flex items-center  bg-slate-100 w-full">
-          
-          <img src={i?.profileImg ? `${URL}/${i.profileImg.replace('uploads\\', '')}`: defaultProfile} alt="User Avatar" className="w-12 h-12 rounded-full mx-3" />
-          <a href={`/user/${i._id}`} className='ml-3 w-3/5'>
-            <p className="text-gray-800 font-semibold">{i?.name}</p>
-            {/* <p className="text-gray-800 font-semibold">{i?.headline}</p> */}
-            <p className="text-gray-500 text-sm">{mutual} Mutual Friends</p>
-          </a>
-          <div className='ml-3 '>
-          {authUser._id == i._id ? <Button>&#x1F60A; Me</Button> :
-          <Button onClick={()=>{connection(foundInField)}} className='z-0 bg-gradient-to-br from-blue-900 via-black to-blue-900 m-1 hover:bg-black focus:ring-0'>{!foundInField ? 'Connect' : foundInField == 'followers' ? 'Connected' : foundInField == 'requests' ? 'Confirm Request' : 'Cancel Request'}</Button>}
-          </div>
-        </div>
-                </div>
-            )}) : <p className=' text-center m-5'>No Connections Yet..</p>}
+            {user.followers.length !=0 ? user.followers?.map(i=>{  
+                return <Connects i={i}/>}) : <p className=' text-center m-5'>No Connections Yet..</p>}
+            </div>}
+            {buttons[2].current && <div>
+            {user.followers.length !=0 ? user.followers?.map(i=>{  
+             return <Mutual  i = {i}/>}) : <p className=' text-center m-5'>No Mutual Connections ..</p>}
             </div>}
             </div>
 

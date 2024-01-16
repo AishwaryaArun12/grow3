@@ -134,13 +134,13 @@ const Post = ({post}) => {
     <div className="bg-white p-4 shadow-md w-full">
       {/* User Info with Three-Dot Menu */}
       <div className="flex items-center justify-between mb-4">
-        <a href={`/user/${post.userId?._id}`}>
+        <a href={localStorage.getItem('id') != 'ADMIN' ? `/user/${post?.userId?._id}`: `/admin/user/${post?.userId?._id}`}>
         <div className="flex items-center space-x-2">
           
-          <img src={post.userId?.profileImg ? `${URL}/${post.userId.profileImg.replace('uploads\\', '')}`: defaultProfile} alt="User Avatar" className="w-12 h-12 rounded-full" />
+          <img src={post?.userId?.profileImg ? `${URL}/${post?.userId.profileImg.replace('uploads\\', '')}`: defaultProfile} alt="User Avatar" className="w-12 h-12 rounded-full" />
           <div>
-            <p className="text-gray-800 font-semibold">{post.userId?.name}</p>
-            <p className="text-gray-500 text-sm">{formatDate(post.time)}</p>
+            <p className="text-gray-800 font-semibold">{post?.userId?.name}</p>
+            <p className="text-gray-500 text-sm">{formatDate(post?.time)}</p>
           </div>
         </div>
         </a>
@@ -186,23 +186,23 @@ const Post = ({post}) => {
 
       {/* Message */}
       <p className="mb-4 text-gray-800">
-        {post.description}
+        {post?.description}
       </p>
 
       {/* Image */}
-      {post.media && <img src={`${URL}/${post.media.replace('uploads\\', '')}`} alt="Post Image" className="mb-4 w-full h-96 object-cover rounded-md" />}
+      {post?.media && <img src={`${URL}/${post?.media.replace('uploads\\', '')}`} alt="Post Image" className="mb-4 w-full h-96 object-cover rounded-md" />}
 
       {/* Like and Comment Section */}
       <div className="flex items-center justify-between text-gray-500">
         <div className="flex items-center space-x-2">
           <button className="flex justify-center items-center gap-2 px-2 hover:bg-gray-50 rounded-full p-1">
-            <FaHeart onClick={localStorage.getItem('id') != 'ADMIN' ? toggleColour : ''}   className={`${post.likes?.includes(user?._id)? 'text-red-700': 'text-gray-500'} w-5 h-5 fill-current`}/>
-            <span>{post.likes?.length} Likes</span>
+            <FaHeart onClick={localStorage.getItem('id') != 'ADMIN' ? toggleColour : ''}   className={`${post?.likes?.includes(user?._id)? 'text-red-700': 'text-gray-500'} w-5 h-5 fill-current`}/>
+            <span>{post?.likes?.length} Likes</span>
           </button>
         </div>
-        <button onClick={()=>{setComments(!comments)}} className="flex justify-center items-center gap-2 px-2 hover:bg-gray-50 rounded-full p-1">
+        <button onClick={localStorage.getItem('id') != 'ADMIN' ? ()=>{setComments(!comments)} : ''} className="flex justify-center items-center gap-2 px-2 hover:bg-gray-50 rounded-full p-1">
           <FaComment className='w-5 h-5 fill-current'/>
-          <span>{post.comments?.length} Comments</span>
+          <span>{post?.comments?.length} Comments</span>
         </button>
       </div>
       {comments && <><hr className="mt-1 mb-2" />

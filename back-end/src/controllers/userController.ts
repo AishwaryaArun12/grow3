@@ -60,6 +60,10 @@ export class userController {
         try {
             const id = req.headers['id'] as string;
             console.log(id)
+            if(id == 'ADMIN'){
+                res.status(200).json({id });
+                return;
+            }
             const user = await this.UserService.getUser(id)
 
             res.status(200).json({ user, id: user._id });

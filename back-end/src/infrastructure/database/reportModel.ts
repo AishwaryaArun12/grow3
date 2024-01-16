@@ -8,7 +8,7 @@ const detailSchema = new Schema({
 })
 
 const PostReportsSchema = new Schema({
-  postId: { type: Schema.Types.ObjectId, ref: 'Posts' },
+  postId: { type: Schema.Types.ObjectId, ref: 'Post' },
   details: [detailSchema],
 });
 

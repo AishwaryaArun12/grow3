@@ -23,7 +23,7 @@ export default function Nav() {
         { name: 'Home', href: '/', current: true },
         { name: 'Partners', href: '#', current: false },
         { name: 'Events', href: '#', current: false },
-        { name: 'Chats', href: '#', current: false },
+        { name: 'Chats', href: '/chat', current: false },
       ]
       const [nav,setNav]= useState(navigation)
       useEffect(()=>{

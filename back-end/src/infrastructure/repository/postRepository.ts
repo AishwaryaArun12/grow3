@@ -1,7 +1,8 @@
 import {Post} from "../../infrastructure/database/postModel";
 import Users from "../../infrastructure/database/userModel";
 import { IPost} from '../../domain/entities/postEntity'
-import { PostReports } from '../../infrastructure/database/reportModel';
+import { CommentReports, PostReports } from '../../infrastructure/database/reportModel';
+import {IReport} from "../../domain/entities/reportEntity";
 
 export default class postRepository{
     async create(comment:object):Promise<IPost>{
@@ -32,6 +33,7 @@ export default class postRepository{
     async delete(id: string):Promise<boolean>{
         try {
             await Post.findByIdAndDelete(id);
+            await PostReports.findOneAndDelete({postId : id});
             return true
         } catch (error) {
             return false
@@ -136,5 +138,31 @@ export default class postRepository{
             console.log(error,'error')
             return false
         }
+    }
+    async getAllReports():Promise<IReport[]>{
+        
+            const postRes = await PostReports.find().populate({
+                path: 'postId',
+                populate: {
+                  path: 'userId',
+                  model: 'Users', 
+                },
+              }).populate({
+                path: 'details.userId',
+                model: 'Users', 
+              });
+            const commentRes = await CommentReports.find().populate({
+                path: 'commentId',
+                populate: {
+                  path: 'userId',
+                  model: 'Users', 
+                },
+              }).populate({
+                path: 'details.userId',
+                model: 'User', 
+              });
+            const res = [...postRes,...commentRes]
+            return res
+       
     }
 }

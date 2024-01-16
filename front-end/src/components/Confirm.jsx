@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Card } from 'flowbite-react';
 
-const Confirm = ({close,updatePost,confirmation}) => {
+const Confirm = ({close,updatePost,confirmation,user}) => {
        
   return (
     <Card >
@@ -14,7 +14,7 @@ const Confirm = ({close,updatePost,confirmation}) => {
         Cancel
       </Button>
       <div onClick={close}>
-      <Button className='bg-blue-900 hover:bg-blue-400' onClick={updatePost}>
+      <Button className='bg-blue-900 hover:bg-blue-400' onClick={()=>{console.log(user),updatePost(user)}}>
         Remove
       </Button>
       </div>

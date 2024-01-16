@@ -1,6 +1,7 @@
 import postUseCase from "../../application/postUseCase";
 import { IPost } from "../../domain/entities/postEntity";
 import commentUseCase from "../../application/commentUseCase";
+import { IReport } from "../../domain/entities/reportEntity";
 
 export default class postService{
     private postUseCase : postUseCase;
@@ -76,5 +77,8 @@ export default class postService{
     }
     checkCommentReport(id:string,userId:string):Promise<boolean | string>{
         return this.commentUseCase.checkReport(id,userId);
+    }
+    getAllReports():Promise<IReport[]>{
+        return this.postUseCase.getAllReports()
     }
 }

@@ -92,7 +92,7 @@ const SideBar = () => {
             <Sidebar.Item className='m-2 text-lg' href="/admin/subscription" icon={HiShoppingBag}>
               Subscriptions
             </Sidebar.Item>
-            <Sidebar.Item href="#" className='m-2 text-lg' icon={HiViewBoards}>
+            <Sidebar.Item href="/admin/reports" className='m-2 text-lg' icon={HiViewBoards}>
               Reports
             </Sidebar.Item>
             {/* <Sidebar.Item href="#" icon={HiArrowSmRight}>

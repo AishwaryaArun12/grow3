@@ -41,5 +41,6 @@ postRouter.patch('/edit_comment_reply', (req,res)=> PostController.editReplyComm
 postRouter.patch('/delete_reply', (req,res)=> PostController.deleteReplyComment(req,res));
 postRouter.patch('/comment_like', (req,res)=> PostController.likeComment(req,res))
 postRouter.post('/report', (req,res)=> PostController.report(req,res));
+postRouter.get('/get_all_reports' ,(req,res)=> PostController.getAllReports(req,res));
 
 export default postRouter

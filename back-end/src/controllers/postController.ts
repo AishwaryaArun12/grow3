@@ -202,4 +202,12 @@ export default class postController {
             res.status(500).json({message: "Internal server error "})
         }
      }
+     async getAllReports(req : Request,res : Response){
+        try {
+            const result =  await this.postService.getAllReports();
+            res.status(200).json({result})
+        } catch (error) {
+            res.status(500).json({error})
+        }
+     }
     }
