@@ -50,8 +50,9 @@ const Profile = () => {
 
     const initialButton = [{name: 'Personal Details',current: true},
     {name : 'Posts', current : false},
-     {name : 'Events', current : false},
-     {name : 'Notifications', current : false}]
+    //  {name : 'Events', current : false},
+    //  {name : 'Notifications', current : false}
+  ]
     const [buttons,setButtons] = useState(initialButton);
    
     useEffect(()=>{

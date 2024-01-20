@@ -22,7 +22,7 @@ const FriendNotification = ({user,userData}) => {
       <div>
         {main[0].active && <div>
             {user.pendings?.length !=0 ? user.pendings?.map(i=>{
-               const mutual = authUser.followers.reduce((count, follower) => {
+               const mutual = authUser?.followers.reduce((count, follower) => {
                 
                 if (i.followers.some((followerId) => followerId._id === follower._id)) {
                     return count + 1; // Increment count if mutual follower found

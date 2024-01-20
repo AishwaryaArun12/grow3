@@ -26,17 +26,17 @@ export default function Nav() {
         { name: 'Chats', href: '/chat', current: false },
       ]
       const [nav,setNav]= useState(navigation)
-      useEffect(()=>{
-        axios.get('/getUser').then(res=>{setUser(res.data.user); getAllPosts()}).catch(err=>{
+      // useEffect(()=>{
+      //   axios.get('/getUser').then(res=>{setUser(res.data.user); }).catch(err=>{
 
-          localStorage.removeItem('id')
-          localStorage.removeItem('token')
-          localStorage.removeItem('loginUser')
+      //     localStorage.removeItem('id')
+      //     localStorage.removeItem('token')
+      //     localStorage.removeItem('loginUser')
           
-            window.location.href = '/login'
+      //       window.location.href = '/login'
           
-        })
-      },[])
+      //   })
+      // },[])
       function classNames(...classes) {
         return classes.filter(Boolean).join(' ')
       }

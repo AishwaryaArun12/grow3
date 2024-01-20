@@ -39,6 +39,10 @@ export const jwtAuth = async(req : Request,res : Response,next : NextFunction)=>
 
 export const newAccessToken = async(req : Request,res : Response)=>{
     const refreshToken = req.body.refreshToken;
+    if(!refreshToken){
+      res.status(500).json({ message: 'No token' });
+      return;
+    }
     try {
         const decoded = Jwt.verify(refreshToken, jwtSecret);
         const parsedToken = decoded as JwtPayload
