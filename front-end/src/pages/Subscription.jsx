@@ -37,13 +37,13 @@ const Subscription = () => {
     <SideBar/>
    
     </div>
-    <div className="overflow-x-auto lg:m-16">
+    <div className="overflow-x-auto scrollNone lg:m-16">
        <div className='flex justify-between'>
        <div className='m-4 text-lg flex'>
-            <FaPlus/><Modal button={'Add Subscription'} updatePost={getData} title={'Create new Subscription'} body={SubscriptionForm}/>
+            <FaPlus className='dark:text-gray-300'/><Modal button={'Add Subscription'} updatePost={getData} title={'Create new Subscription'} body={SubscriptionForm}/>
         </div>
         <div className='m-4 text-lg flex'>
-            <FaPlus/><Modal button={'Add Feature'} title={'Add New Feature'} body={AddFeatureForm}/>
+            <FaPlus className='dark:text-gray-300'/><Modal button={'Add Feature'} title={'Add New Feature'} body={AddFeatureForm}/>
         </div>
        </div>
       <Table hoverable>

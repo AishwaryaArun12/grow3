@@ -5,6 +5,8 @@ export interface IEvent{
     endTime?: Date,
     startTime ?: Date,
     eventLink ?: string[],
-    userId ?: string | object
-    attendees ?: string[];
+    userId ?: string | object,
+    attendees ?: string[],
+    media ?: string,
+    speakers ?: string[],
 }

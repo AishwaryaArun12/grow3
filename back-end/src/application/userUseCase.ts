@@ -40,5 +40,8 @@ export default class userUseCase {
     getAllUsers(): Promise<User[]>{
         return this.userRepository.getAllUser();
     }
+    razorpay(amt:number): Promise<string>{
+        return this.userRepository.razorPost(amt);
+    }
    
 }

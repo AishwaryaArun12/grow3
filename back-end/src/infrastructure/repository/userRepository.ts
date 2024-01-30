@@ -5,14 +5,20 @@ import dotenv from 'dotenv';
 dotenv.config();
 import otpGenerator from 'otp-generator'
 import bcrypt from 'bcrypt';
+import Razorpay from 'razorpay'
 
 const transporter = nodemailer.createTransport({
     service : 'Gmail',
     auth : {
-      user : process.env.user,
-      pass : process.env.pass
+      user : process.env.USER,
+      pass : process.env.PASS
     }
   })
+
+  const razorpay = new Razorpay({
+    key_id: process.env.RAZORKEY,
+    key_secret: process.env.RAZORSECRET,
+  });
 
 export class userRepository{
     async createUser(user : User): Promise<User>{
@@ -54,7 +60,7 @@ export class userRepository{
     }
     async getUser(id : string): Promise<User>{
 
-        const user = await Users.findById(id).populate('pendings').populate('requests').populate('followers');
+        const user = (await Users.findById(id).populate('pendings').populate('requests').populate('followers').populate('primium.subscriptionId'));
         
         return user;
     }
@@ -109,10 +115,8 @@ export class userRepository{
         }
     }
     async editUser(_id:string, editinfo: object):Promise<User | string>{
-        try {
-            
-            let edit = await Users.findOneAndUpdate({_id},{$set : editinfo},{ new: true });
-           
+        try {           
+            let edit = await Users.findOneAndUpdate({_id},{$set : editinfo},{ new: true, upsert: true });
             return edit
         } catch (error) {
             return 'Invalid userId';
@@ -137,5 +141,19 @@ export class userRepository{
             
         }
     }
+    async razorPost (amt:number):Promise<string> {
+        const amount = amt;
+        const options = {
+          amount: amount * 100, // Razorpay expects the amount in paise (100 paise = 1 INR)
+          currency: 'INR',
+        };
+      
+        try {
+          const order = await razorpay.orders.create(options);
+          return order.id
+        } catch (error) {
+          console.error('Error creating order:', error);
+        }
+      }
 
 }

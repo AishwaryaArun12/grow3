@@ -14,7 +14,7 @@ export default function Component({post,confirmation,button,title,updatePost, bo
 
   return (
     <>
-      <div  onClick={() => setOpenModal(true)}>{button}</div>
+      <div className='dark:text-gray-200'  onClick={() => setOpenModal(true)}>{button}</div>
       <Modal show={openModal} size="xl" onClose={onCloseModal} popup>
         <Modal.Header><div className='flex'>{profileIcon} <div className='m-2'>{title}</div></div></Modal.Header>
         <Modal.Body>

@@ -70,8 +70,7 @@ const userSchema = new mongoose.Schema({
     ],
     primium : {
         endingDate : {
-            type : Date,
-            expires: 0,
+            type : Date
         },
         subscriptionId : {
             type : Schema.Types.ObjectId,

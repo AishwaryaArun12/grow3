@@ -151,11 +151,11 @@ const handleNegodone = useCallback(async({ans})=>{
     <div className='mb-10 mt-1 w-full  p-0 border text-center text-lg'>
         
         {!remoteStream && <>
-        <ReactPlayer className="border-2 w-full" playing muted height={"500px"}  url={myStream}/>
+        <ReactPlayer className="border-2 w-full" playing muted height={"100%"}  url={myStream}/>
         </>}
         
         {remoteStream && <>
-            <div className='relative border-2'><ReactPlayer className="relative border-2 w-screen mx-20" playing muted height={"90%"}  url={remoteStream}/>
+            <div className='relative border-2'><ReactPlayer className="relative border-2 w-screen lg:mx-20" playing muted height={"80vh"} width={"100%"}  url={remoteStream}/>
                  <div className='m-2 flex justify-around w-1/2' >
                  {isCameraOff ? (
           <BsCameraVideo
@@ -184,7 +184,7 @@ const handleNegodone = useCallback(async({ans})=>{
           onClick={handleHangUp}
         />
                 </div></div>
-        <div className='absolute right-20 bottom-5'><ReactPlayer playing muted height={"300px"} width={'600px'} url={myStream}/></div>
+        <div className='absolute right-20 bottom-5 text-end'><ReactPlayer playing muted height={"300px"} width={'50%'} url={myStream}/></div>
         
         </>}
       

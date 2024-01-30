@@ -69,12 +69,6 @@ const passportRoute = Router();
             res.status(401).json({res:'Unauthorised'})
         }
         
-       }else{
-           const token = Jwt.sign({ id : process.env.ADMIN }, jwtSecret, { expiresIn: '5m' });
-            
-            const refreshToken = Jwt.sign({id : process.env.ADMIN }, jwtSecret, { expiresIn: '7d' });
-           
-            res.status(200).json({res:'Authorised',token,refreshToken,id:'loginAdmin'})
        }
     })
 

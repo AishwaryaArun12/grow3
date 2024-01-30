@@ -13,6 +13,7 @@ import { HiPencil,HiLocationMarker,HiAcademicCap } from 'react-icons/hi';
 import { IoMailOutline, IoStar } from 'react-icons/io5';
 import { FaMoneyCheck, FaBriefcase } from 'react-icons/fa';
 import { AuthContext } from '../store/Auth';
+import { FaCalendarAlt} from 'react-icons/fa';
 import Mutual from '../components/Mutual';
 import Connects from '../components/Connects';
 
@@ -27,8 +28,9 @@ const UserProfile = () => {
     const {id} = useParams();
     const [targetDiv, setTargetDiv] = useState('mydiv');
     const [foundInField,setFoundInField] = useState();
+    const [events,setEvents] = useState([]);
  
-    const events = []
+    
     useEffect(() => {
       // Check the window width and set the targetDiv accordingly
       const handleResize = () => {
@@ -54,7 +56,10 @@ const UserProfile = () => {
        axios.get('/post/getallposts/0/0').then(res=>{
         setUserPosts(()=> res.data.posts.filter(i=>i.userId._id == id))
        })
-      
+       axios.get(`/event/user_event/${id}`).then(res => {
+        setEvents(res.data.result);
+       })
+       
         
       },[posts])
     const initialButton = [{name : 'Posts', current : 'true'},
@@ -263,7 +268,7 @@ const UserProfile = () => {
             </div>
             <div className='m-4'>
             <p className="mt-5 lg:text-lg text-sm leading-8 ">
-              {user.description ? user.description : 'Share something about yourself, Your ideas'}
+              {user.description && user.description }
             </p>
             </div>
             <div className='w-full  m-6 lg:grid lg:grid-cols-2'>
@@ -293,7 +298,58 @@ const UserProfile = () => {
             {buttons[2].current && <div>
             {user.followers.length !=0 ? user.followers?.map(i=>{  
              return <Mutual  i = {i}/>}) : <p className=' text-center m-5'>No Mutual Connections ..</p>}
+             
             </div>}
+            {buttons[3].current && events.length != 0 ? events.map((event) => (
+          <>
+          <div className=' max-w-full mb-4 rounded-lg'>
+          <div className='text-end'>
+       
+        {/* Dropdown menu */}
+        
+       </div>
+                    <div className="w-full p-2 rounded-lg shadow-xl bg-gray-300">
+                    <img
+                        className="object-cover w-full  lg:h-96"
+                        src={`${URL}/${event?.media?.replace('uploads\\', '')}`}
+                        alt="image"
+                    />
+                    <div className="pl-2">
+                       <div >
+                       <h2 className="text-4xl p-3 font-semibold tracking-tight text-blue-900">
+                            {event.name}
+                        </h2>
+                        <div className='flex'>
+                            <FaCalendarAlt size={20}/>
+                            <p className='mx-3'>{event.startTime}<span className='mx-2 '>-</span></p>
+                            <p className='mx-3'>{event.endTime}</p>
+                        </div>
+                        <h4 className="text-xl p-3 font-semibold tracking-tight text-blue-900">
+                          <div className='flex'>
+                          <p>Event By -</p>
+                         <div className='flex mt-5 w-full'>
+                                <div className='w-16 h-14 mt-3 overflow-hidden rounded-full border-2 border-gray-300 shadow-md'>
+                                <img className='w-full h-full object-cover bg-transparent' src={ event.userId?.profileImg ? `${URL}/${event.userId.profileImg.replace('uploads\\', '')}` : defaultProfile} alt="" />
+                                </div>
+                                <div className='h-auto rounded-full  w-full ml-1 p-2 shadow-md border-gray-300 border-2 hover:bg-gray-200'>
+                                <p className=' font-mono'>{event.userId.name}</p>
+                                <p className=' font-thin text-base'>{event.userId.headline}</p>
+                                </div>
+                            </div>
+                            </div></h4>
+                            <div>
+                            {event.attendees.length <= 1 ? <p className=' text-blue-950 font-serif text-lg'> {event.attendees.length} Attendee </p> : 
+                                <p className='p-2 text-blue-950 font-serif text-lg'> {event.attendees.length} Attendees</p>}
+                               <p className='p-2 text-blue-950 font-serif text-lg'> {event.description}</p>
+                            </div>
+                       </div>
+                        
+                    </div>
+                    </div>
+                    </div>
+          <hr className='bg-black'/>
+          </>
+        )) : <h2 className='text-xl font-bold ml-12'>No Events Yet</h2>}
             </div>
 
         </div>

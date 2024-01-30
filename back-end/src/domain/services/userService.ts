@@ -1,4 +1,4 @@
-import {User} from '../../domain/entities/userEntity';
+import {User} from '../entities/userEntity';
 
 import userUseCase from '../../application/userUseCase';
 
@@ -44,5 +44,8 @@ export class userService {
     }
     async getAllUsers():Promise<User[]>{
         return this.user_use_case.getAllUsers();
+    }
+    async razorpay(amt:number):Promise<string>{
+        return this.user_use_case.razorpay(amt);
     }
 }

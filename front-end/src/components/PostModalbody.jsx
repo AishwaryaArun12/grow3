@@ -24,19 +24,23 @@ const PostModalbody = ({close,ePost}) => {
       }
     },[])
     const handleSubmit = async()=>{
-      try {
-        const file = postImg;
-        const res = await axios.post('/post/create',{file,description},{
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          }}
-        )
-        setDescription('');
-        setPostImg('');
-        getAllPosts();
-        close()
-      } catch (error) {
-        setError(error.message)
+      if(postImg || description && description?.trim() != ''){
+        try {
+          const file = postImg;
+          const res = await axios.post('/post/create',{file,description},{
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            }}
+          )
+          setDescription('');
+          setPostImg('');
+          getAllPosts();
+          close()
+        } catch (error) {
+          setError(error.message)
+        }
+      }else{
+        setError('Add something which you want to share')
       }
     }
     const handleClick = async ()=>{

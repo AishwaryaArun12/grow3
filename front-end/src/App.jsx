@@ -23,7 +23,10 @@ import VideoRoom from './pages/VideoRoom'
 import { useSocket } from './store/Socket'
 import peer from './service/peer'
 import { SocketContext } from './store/Socket'
-
+import Event from './pages/Event'
+import EventDetail from './pages/EventDetail'
+import Partners from './pages/Partners'
+import NotFound from './pages/NotFound'
 
 const App = () => {
   const {user,setUser} = useContext(AuthContext)
@@ -53,55 +56,61 @@ const App = () => {
        <Router>
        <Routes>
         <Route exact path='/' element={<Home />}/>
-      </Routes>
-      <Routes>
+      
         <Route exact path='/selectuser' element={<SelectUser />}/>
-      </Routes>
-       <Routes>
+      
         <Route exact path='/signup' element={<SignUp />}/>
-      </Routes>
-      <Routes>
+   
         <Route exact path='/login' element={<Login />}/>
-      </Routes>
-      <Routes>
+     
         <Route exact path='/otp' element={<Otp />}/>
-      </Routes>
-      <Routes>
+     
         <Route exact path='/admin/home' element={<HomeAdmin />}/>
-      </Routes>
-      <Routes>
+     
+      
         <Route exact path='/forgotemail' element={<Forgot_Email />}/>
-      </Routes>
-      <Routes>
+      
+     
         <Route exact path='/changepassword' element={<ChangePassword />}/>
-      </Routes>
-      <Routes>
+      
+      
         <Route exact path='/profile' element={<Profile />}/>
-      </Routes>
-      <Routes>
+      
+      
         <Route exact path='/premium' element={<Pricing />}/>
-      </Routes>
-      <Routes>
+      
         <Route exact path='/user/:id' element={<UserProfile />}/>
-      </Routes>
-      <Routes>
+      
+      
         <Route exact path='/admin/users' element={<AdminUsers />}/>
-      </Routes>
-      <Routes>
+      
+      
         <Route exact path='/admin/user/:id' element={<AdminUserProfile />}/>
-      </Routes>
-      <Routes>
+     
+      
         <Route exact path='/admin/subscription' element={<Subscription />}/>
-      </Routes>
-      <Routes>
+      
+      
         <Route exact path='/admin/reports' element={<AdminReport />}/>
-      </Routes>
-      <Routes>
+      
+      
         <Route exact path='/chat' element={<Chat />}/>
-      </Routes>
-      <Routes>
+      
+      
         <Route exact path='/video/room/:room' element={<VideoRoom />}/>
-      </Routes>
+      
+      
+        <Route exact path='/event' element={<Event />}/>
+      
+      
+        <Route exact path='/event/:id' element={<EventDetail />}/>
+      
+      
+        <Route exact path='/partners' element={<Partners />}/>
+     
+      
+        <Route path="*" element={<NotFound />}/>
+     </Routes>
        </Router>
       
     </div>

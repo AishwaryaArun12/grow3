@@ -11,10 +11,13 @@ export default class chatController{
 
     async createConversation (req:Request,res:Response){
         try {
-            console.log(req.body);
+            const id = req.headers['id'] as string;
             const {senderId,receiverId} = req.body;
-            const result = await this.chatService.createConversation([senderId,receiverId]);
-            res.status(200).json({result})
+            const resp = await this.chatService.createConversation([senderId,receiverId]);
+            const all = await this.chatService.getConversations(id);
+            const result = all.filter(i=>{ return i._id.toString() === resp._id.toString()})
+            
+            res.status(200).json({result:result[0]})
         } catch (error) {
             res.status(500).json(error)
         }

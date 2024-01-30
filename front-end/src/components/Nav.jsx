@@ -10,6 +10,10 @@ import defaultProfile from '../assets/defaultProfile.png'
 import { URL } from '../axiosConfig'
 import { postContext } from '../store/Post'
 
+ 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function Nav() {
   const {user,setUser} = useContext(AuthContext)
@@ -21,22 +25,12 @@ export default function Nav() {
   const navigate = useNavigate();
     const navigation = [
         { name: 'Home', href: '/', current: true },
-        { name: 'Partners', href: '#', current: false },
-        { name: 'Events', href: '#', current: false },
+        { name: 'Partners', href: '/partners', current: false },
+        { name: 'Events', href: '/event', current: false },
         { name: 'Chats', href: '/chat', current: false },
       ]
       const [nav,setNav]= useState(navigation)
-      // useEffect(()=>{
-      //   axios.get('/getUser').then(res=>{setUser(res.data.user); }).catch(err=>{
-
-      //     localStorage.removeItem('id')
-      //     localStorage.removeItem('token')
-      //     localStorage.removeItem('loginUser')
-          
-      //       window.location.href = '/login'
-          
-      //   })
-      // },[])
+    
       function classNames(...classes) {
         return classes.filter(Boolean).join(' ')
       }
@@ -69,6 +63,7 @@ export default function Nav() {
        }
       }
       const handleKeyPress = (event) => {
+        console.log(!names?.some(user=> user.name == value))
         if (event.key === 'ArrowDown') {
           // Handle down arrow key
           event.preventDefault();
@@ -79,6 +74,8 @@ export default function Nav() {
           event.preventDefault();
           if (selectedSuggestion !== null) {
             handleSelection(suggetions[selectedSuggestion]);
+          }else if(!names?.some(user=> user.name == value)){
+            toast("Sorry, User not found!");
           }
         }
       };
@@ -95,6 +92,7 @@ export default function Nav() {
         }
         
       };
+
     
   return (
     <div>
@@ -115,6 +113,7 @@ export default function Nav() {
                     )}
                   </Disclosure.Button>
                 </div>
+                <ToastContainer />
                 <div className="flex md:flex-1 left-10  items-center justify-center sm:items-stretch sm:justify-start">
                   <div className="m-6 lg:m-0 flex  items-center">
                     <img
@@ -166,14 +165,7 @@ export default function Nav() {
                   </div>}
                 </div>
       
-                  <button
-                    type="button"
-                    className="relative rounded-full bg-blue-900 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                  >
-                    <span className="absolute -inset-1.5" />
-                    <span className="sr-only">View notifications</span>
-                    <BellIcon className="h-6 w-6" aria-hidden="true" />
-                  </button>
+                  
                   {/* Profile dropdown */}
                   <Menu as="div" className="relative ml-3">
                     <div>

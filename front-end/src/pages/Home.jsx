@@ -12,6 +12,7 @@ import Premium from '../components/Premium'
 import Posts from '../components/Posts';
 import { AuthContext } from '../store/Auth';
 import { postContext } from '../store/Post';
+import EventModalBody from '../components/EventModalBody';
 
 const Home = () => {
   
@@ -37,7 +38,7 @@ const Home = () => {
                   getAllPosts();
                 })
             }else{
-               // navigate('/login')
+                navigate('/login')
             }
         }else{
           axios.get('/getUser').then(res=>{setUser(res.data.user); getAllPosts()}).catch(err=>{
@@ -78,10 +79,11 @@ const Home = () => {
                     <Modal profileIcon= {profileIcon} button={buttonContent} title='What do you want to talk about' body={PostModalbody}/>
                     <div className='flex justify-around'>
                       <Modal button={imageButton} profileIcon= {profileIcon} title='What do you want to talk about' body={PostModalbody}/>
-                      <div className='flex pt-4'>
+                      <Modal button={(<div className='flex pt-4'>
                       <FaCalendarAlt size={25} color="black" className='opacity-80' />
                       <p>Event</p>
-                      </div>
+                      </div>)} profileIcon= {profileIcon} title='Create an event' body={EventModalBody}/>
+                      
                     </div>
               </div >
               <Premium />

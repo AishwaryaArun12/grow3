@@ -98,13 +98,15 @@ const Post = ({post}) => {
   };
 
   const addComment =async ()=>{
-    try {
-       await axios.patch('/post/add_comment',{id:post._id,comment:newcomment});
-
-      setNewComment('')
-      getAllPosts();
-    } catch (error) {
-      console.log(error);
+    if(newcomment.trim() != ''){
+      try {
+         await axios.patch('/post/add_comment',{id:post._id,comment:newcomment});
+  
+        setNewComment('')
+        getAllPosts();
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
   const remove = async()=>{

@@ -1,17 +1,70 @@
 import { CheckIcon } from '@heroicons/react/20/solid'
 import Nav from '../components/Nav'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import axios from '../axiosConfig'
+import GROW3 from '../assets/GROW3.gif'
+import { AuthContext } from '../store/Auth'
+import useRazorpay from "react-razorpay";
 
 export default function Example() {
   const [subscription, setSubscription] = useState([]);
-    
+  const {user} = useContext(AuthContext);
+  const [Razorpay] = useRazorpay();
+  const [error,setError] = useState()
+ 
       useEffect(()=>{
         axios.get('/subscription/get_subscriptions').then(res=>{
           setSubscription(res.data.result);
       })
       },[])
-     
+
+      const subscribe = (id,durationIn,duration)=>{
+        try {
+          axios.patch('/editProfile',{primium : {endingDate :durationIn.startsWith('Month') ? new Date(Date.now() + duration * 30 * 24 * 60 * 60 * 1000):
+          new Date(Date.now() + duration * 365 * 24 * 60 * 60 * 1000)
+        ,subscriptionId : id}});
+        } catch (error) {
+          console.log('object', error);
+        }
+      }
+
+      
+      const payment = async (fees,id,durationIn,duration) => {
+        if(Date.now()< new Date(user?.primium?.endingDate).getTime()){
+          setError('Sorry, You have already one plan.')
+        }else{
+        try {
+          const res = await axios.post('/razorpay', { amt: fees });
+          const orderId = res.data.orderId;
+      
+          var options = {
+            "key": "rzp_test_WbvbNdBxWlKefq",
+            "amount": fees,
+            "currency": "INR",
+            "name": "GROW3",
+            "description": "Purchase Description",
+            "image": {GROW3}, // Add quotes around the URL
+            "order_id": orderId,
+            "handler": function () {
+              subscribe(id,durationIn,duration)            },
+            "prefill": {
+              "name": user?.name,
+              "email": user?.email,
+              "contact": "9746521181"
+            },
+            "theme": {
+              "color": "#F37254"
+            }
+          };
+      
+          var rzp = new Razorpay(options);
+          rzp.open();
+      
+        } catch (error) {
+          console.log(error, 'error');
+        }
+      }
+      }
   return (
     
     <>
@@ -24,6 +77,7 @@ export default function Example() {
             <p className="mt-6 text-lg leading-8 text-gray-600">
             Unlock Exclusive Premium Deals: Join Our VIP Community Today!
             </p>
+            {error && <p className='mt-6 text-lg leading-8 text-red-600'>{error}</p>}
           </div>
           <div className="mx-auto mt-16 max-w-2xl rounded-3xl ring-1 lg:px-9  ring-gray-200 sm:mt-10 lg:mx-0 lg:flex lg:max-w-none">
           {subscription.map(sub=>{
@@ -52,12 +106,13 @@ export default function Example() {
                   </li>
                 ))}
               </ul>
-                  <a
+                  <button
+                   onClick={()=>{payment(sub.fees,sub._id,sub.durationIn,sub.duration)}}
                     href="#"
-                    className="mt-10 block w-full rounded-md bg-gradient-to-br from-black via-blue-900 to-black px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    className=" disabled:bg-black mt-10 block w-full rounded-md bg-gradient-to-br from-black via-blue-900 to-black px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     Get access
-                  </a>
+                  </button>
                   <p className="mt-6 text-xs leading-5 text-gray-600">
                     Invoices and receipts available for easy company reimbursement
                   </p>
