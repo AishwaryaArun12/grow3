@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react'
-import {BrowserRouter as Router,Routes, Route} from 'react-router-dom'
+import React, { useContext, useEffect, useCallback } from 'react'
+import {BrowserRouter as Router,Routes, Route, useNavigate} from 'react-router-dom'
 import SignUp from './pages/SignUp'
 import Login from './pages/Login'
 import Otp from './pages/otp'
@@ -19,11 +19,20 @@ import AdminUserProfile from './pages/AdminUserProfile'
 import Subscription from './pages/Subscription'
 import AdminReport from './pages/AdminReport'
 import Chat from './pages/Chat'
+import VideoRoom from './pages/VideoRoom'
+import { useSocket } from './store/Socket'
+import peer from './service/peer'
+import { SocketContext } from './store/Socket'
 
 
 const App = () => {
-  const {setUser} = useContext(AuthContext)
-  const {getAllPosts} = useContext(postContext)
+  const {user,setUser} = useContext(AuthContext)
+  const {remoteSocketId,setRemoteSocketId} = useContext(SocketContext)
+  
+  const socket = useSocket();
+
+  
+
   useEffect(()=>{
     axios.get('/getUser').then(res=>{setUser(res?.data.user); }).catch(err=>{
       localStorage.removeItem('id')
@@ -32,8 +41,12 @@ const App = () => {
         window.location.href = '/login'
       }
     })
+    
   },[])
-  
+
+
+
+
   return (
     <div>
      
@@ -85,6 +98,9 @@ const App = () => {
       </Routes>
       <Routes>
         <Route exact path='/chat' element={<Chat />}/>
+      </Routes>
+      <Routes>
+        <Route exact path='/video/room/:room' element={<VideoRoom />}/>
       </Routes>
        </Router>
       

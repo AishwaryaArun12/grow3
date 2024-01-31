@@ -8,9 +8,10 @@ import userRouter from './infrastructure/routes/userRoutes';
 import http from 'http';
 import postRoutes from './infrastructure/routes/postRoutes'
 import subscriptionRoutes from './infrastructure/routes/subscriptionRoutes';
+import chatRoutes from './infrastructure/routes/chatRoutes'
 import { jwtAuth } from './infrastructure/middlewares/jwtAuth';
 import { adminJwtAuth } from './infrastructure/middlewares/admin';
-
+import configureSocket from './config/socket';
 
 
 const port = parseInt( process.env.PORT);
@@ -27,8 +28,10 @@ app.use(passport.session());
   app.use('/',jwtAuth, userRouter);
   app.use('/post',jwtAuth, postRoutes);
   app.use('/subscription', subscriptionRoutes )
+  app.use('/chat', chatRoutes )
 
   const server = new http.Server(app);
+  const io = configureSocket(server)
  
   server.listen(port, ()=>{
     console.log(`server running on the port ${port}`)

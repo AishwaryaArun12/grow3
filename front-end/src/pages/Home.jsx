@@ -86,8 +86,8 @@ const Home = () => {
               </div >
               <Premium />
             </div>
-            <div className='hidden lg:block w-5/12 mr-7'></div>
-            <div className='bg-gray-100 w-full lg:w-6/12 mr-3 '>
+            <div className='hidden lg:block w-5/12 mr-2'></div>
+            <div className='bg-gray-100 w-full lg:w-7/12 mr-14 '>
                 <Posts/>
             </div>
             <div className='bg-gray-100 w-auto mr-3 '>
