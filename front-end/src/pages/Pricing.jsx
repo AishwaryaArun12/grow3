@@ -2,7 +2,7 @@ import { CheckIcon } from '@heroicons/react/20/solid'
 import Nav from '../components/Nav'
 import { useContext, useEffect, useState } from 'react'
 import axios from '../axiosConfig'
-import GROW3 from '../assets/GROW3.gif'
+import GROW3 from '../assets/Grow3.gif'
 import { AuthContext } from '../store/Auth'
 import useRazorpay from "react-razorpay";
 
