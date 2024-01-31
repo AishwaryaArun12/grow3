@@ -1,7 +1,7 @@
 import  { useState } from 'react'
 import { Sidebar, DarkThemeToggle } from 'flowbite-react';
 import { HiArrowSmRight, HiChartPie, HiInbox, HiShoppingBag, HiTable, HiUser, HiViewBoards, HiMenu } from 'react-icons/hi';
-import GROW3 from '../assets/GROW3.gif'
+import GROW3 from '../assets/Grow3.gif'
 import { useMediaQuery } from 'react-responsive';
 import { useNavigate } from 'react-router-dom';
 

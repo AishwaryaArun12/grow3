@@ -3,7 +3,7 @@ import React,{useState,useEffect} from 'react'
  import {useForm} from 'react-hook-form'
  import axios from '../axiosConfig';
 import { useNavigate } from 'react-router-dom';
-import GROW3 from '../assets/GROW3.gif'
+import GROW3 from '../assets/Grow3.gif'
 
 
 export default function SignUp() {

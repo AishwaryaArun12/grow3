@@ -3,7 +3,7 @@
 import { Disclosure, Menu } from '@headlessui/react'
  import { AtSymbolIcon, Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useNavigate } from 'react-router-dom'
-import GROW3 from '../assets/GROW3.gif'
+import GROW3 from '../assets/Grow3.gif'
 import axios from '../axiosConfig'
 import { AuthContext } from '../store/Auth'
 import defaultProfile from '../assets/defaultProfile.png'
