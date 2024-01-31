@@ -1,4 +1,4 @@
-import axios from '../axiosConfig'
+import axios,{URL} from '../axiosConfig'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useSearchParams } from 'react-router-dom';

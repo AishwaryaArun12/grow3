@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 export const URL = 'http://localhost:3000';
+const mainUrl = 'http://localhost:5173'
 
 const instance = axios.create({
     baseURL: URL,
@@ -47,10 +48,10 @@ instance.interceptors.response.use(
     },
     async (error) => {
         const originalRequest = error.config;
-        console.log(error.response.data,'oooooooooooooooooooooooooooooo')
+        
         if((!localStorage.getItem('loginUser') && !localStorage.getItem('loginAdmin')) || error.response.data.message == 'Admin blocked' ){
             
-            if(window.location.href == 'http://localhost:5173/login' || window.location.href == 'http://localhost:5173/signup'){
+            if(window.location.href == `${mainUrl}/login` || window.location.href == `${mainUrl}/signup` || window.location.href.startsWith(`${mainUrl}/selectuser/?id=`) ){
                 throw new Error(error.response?.status)
             }
             localStorage.removeItem('loginUser');
@@ -78,7 +79,7 @@ instance.interceptors.response.use(
     
     
                 } catch (error) {
-                    console.log('objecttttttttttt',error);
+                    
                     if(error.response.data.message == 'No token'){
                         localStorage.removeItem('loginAdmin');
             localStorage.removeItem('token');

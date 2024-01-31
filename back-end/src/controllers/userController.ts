@@ -134,12 +134,12 @@ export class userController {
     }
     async selectUser(req: Request, res: Response) {
         try {
-            const { userType } = req.body;
+            const { userType,id } = req.body;
             let user;
-            console.log(req.headers['id'], 'checking header id');
+            console.log(id, 'checking id');
 
-            if (req.headers['id']) {
-                const id = req.headers['id'].toString();
+            if (id) {
+                
                 try {
                     user = await this.UserService.getUser(id);
 
@@ -147,7 +147,10 @@ export class userController {
                     res.status(401).json({ res: 'user not found' });
                 }
                 const result = await this.UserService.selectUser(userType, user.email)
-                res.status(200).json({ id: result })
+                const token = Jwt.sign({ id : id }, jwtSecret, { expiresIn: '5m' });
+            
+            const refreshToken = Jwt.sign({id : id }, jwtSecret, { expiresIn: '7d' });
+                res.status(200).json({ id: id,result ,token,refreshToken})
             } else {
                 res.status(401).json({ res: 'user not found' })
             }

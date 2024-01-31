@@ -39,7 +39,7 @@ export class userRepository{
         await Users.findOneAndUpdate({ email : email }, { otp, otpExpire });
         console.log(otp,'otp',otpExpire);
         //const toEmail =savedUser.email;
-        const toEmail = 'jj4245888@gmail.com';
+        const toEmail = email;
         const mailOptions = {
             from : 'grow345678@gmail.com',
             to : toEmail,

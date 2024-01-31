@@ -211,7 +211,7 @@ const Profile = () => {
                   {/* Cover Photo */}
                   <div className='relative h-56 w-full bg-blue-500'>
                   <label htmlFor="cover">
-                  <img  src={ user.coverPhoto ? `http://localhost:3000/${user.coverPhoto.replace('uploads\\', '')}` : coverImg} 
+                  <img  src={ user.coverPhoto ? `${URL}/${user.coverPhoto.replace('uploads\\', '')}` : coverImg} 
                   alt="" 
                   
                   className='h-full w-full' 
@@ -235,7 +235,7 @@ const Profile = () => {
                     {/* Profile Photo Image */}
                     <label htmlFor="img">
                     <img
-                      src={ user.profileImg ? `http://localhost:3000/${user.profileImg.replace('uploads\\', '')}` : defaultProfile} 
+                      src={ user.profileImg ? `${URL}/${user.profileImg.replace('uploads\\', '')}` : defaultProfile} 
                       alt='Profile'
                       className='w-full h-full object-cover bg-transparent'
                       

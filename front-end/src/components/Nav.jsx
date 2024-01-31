@@ -72,9 +72,13 @@ export default function Nav() {
         } else if (event.key === 'Enter') {
           // Handle Enter key
           event.preventDefault();
+          const enteredValue = names?.find(user=> user.name.toLowerCase() == value.toLowerCase())
+          
           if (selectedSuggestion !== null) {
             handleSelection(suggetions[selectedSuggestion]);
-          }else if(!names?.some(user=> user.name == value)){
+          }else if(enteredValue){
+             handleSelection(enteredValue);
+          }else{
             toast("Sorry, User not found!");
           }
         }

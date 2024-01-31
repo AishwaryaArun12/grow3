@@ -29,29 +29,24 @@ const passportRoute = Router();
         if(!req.user){
             res.redirect('/auth/callback/failure');
         }else{
-        
-        if(user.displayName == 'Aishwarya Arun' && user.email == 'aishwarya4arun@gmail.com'){
-            req.session.user = req.user;
-           
-            res.redirect('http://localhost:5173/admin/home/?id=loginAdmin')
-        }else{
+
             let isUser = await Users.findOne({email:user.email})
             if(!isUser){
             isUser = await Users.create({name:user.displayName,email :user.email,password : 'a12345',verified : true});
             
-            res.redirect(`http://localhost:5173/selectuser/?id=${isUser._id}`);
+            res.redirect(`${process.env.MAINURL}/selectuser/?id=${isUser._id}`);
                 
            }else{
            
-            res.redirect(`http://localhost:5173/?id=${isUser._id}`);
+            res.redirect(`${process.env.MAINURL}/?id=${isUser._id}`);
            }
             
-        }
+        
         
         }
     });
     passportRoute.get('/callback/failure' , (req , res) => {
-        res.redirect('http://localhost:5173/login');
+        res.redirect(`${process.env.MAINURL}/login`);
       })
     passportRoute.post('/setToken', async(req,res)=>{
         

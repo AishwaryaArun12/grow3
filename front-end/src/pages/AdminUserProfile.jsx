@@ -20,7 +20,7 @@ const AdminUserProfile = () => {
     const {id} = useParams();
     const [targetDiv, setTargetDiv] = useState('mydiv');
     const [foundInField,setFoundInField] = useState();
-    const [events,setEvents] = useState();
+    const [events,setEvents] = useState([]);
 
     useEffect(() => {
       // Check the window width and set the targetDiv accordingly
@@ -74,15 +74,13 @@ const AdminUserProfile = () => {
         <div className='sm:block lg:flex h-screen dark:bg-gradient-to-br from-zinc-900 via-gray-700 to-zinc-900'>
             <div><SideBar/></div>
             <div className='lg:flex flex-1 h-screen'>
-            <div  className='lg:fixed bg-gray-100 m-0 p-0 lg:ml-6 mt-5 lg:p-4 lg:px-4 w-fit lg:w-5/12 h-fit  overflow-y-auto'>
-            
-           
+            <div  className='lg:fixed bg-gray-100 m-0 p-0 lg:ml-6 mt-5 lg:p-4 lg:px-4 w-fit lg:w-5/12 h-fit  overflow-y-auto'>         
             <div>
               <div>
                 {/* Cover Photo */}
                 <div className='relative h-56 w-full bg-blue-500'>
                 
-                <img  src={ user.coverPhoto ? `http://localhost:3000/${user.coverPhoto.replace('uploads\\', '')}` : coverImg} 
+                <img  src={ user.coverPhoto ? `${URL}/${user.coverPhoto.replace('uploads\\', '')}` : coverImg} 
                 alt="" 
                 
                 className='h-full w-full' 
@@ -101,7 +99,7 @@ const AdminUserProfile = () => {
                   {/* Profile Photo Image */}
                  
                   <img
-                    src={ user.profileImg ? `http://localhost:3000/${user.profileImg.replace('uploads\\', '')}` : defaultProfile} 
+                    src={ user.profileImg ? `${URL}/${user.profileImg.replace('uploads\\', '')}` : defaultProfile} 
                     alt='Profile'
                     className='w-full h-full object-cover bg-transparent'
                     
@@ -116,10 +114,7 @@ const AdminUserProfile = () => {
                   <ProfileDetail  user={user} userData={userData}/>
               </div>
              
-            </div>
-            
-          
-            
+            </div>      
          <a onClick={scrollToTop}>
           <Button className='hidden sm:block focus:ring-0 bg-gradient-to-br from-blue-900 via-black to-blue-900 fixed right-96 bottom-12 rounded-full w-12 h-12 '>
             <svg className="h-5 w-5  animate-bounce" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">

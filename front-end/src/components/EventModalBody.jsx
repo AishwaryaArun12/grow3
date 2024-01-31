@@ -1,13 +1,16 @@
-import React, { useState ,useEffect,useRef} from 'react'
+import React, { useState ,useEffect,useRef, useContext} from 'react'
 import { useForm } from 'react-hook-form';
 import axios,{URL} from '../axiosConfig'
 import DateTime from './DateTime';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { AuthContext } from '../store/Auth';
+import { Button } from 'flowbite-react';
  
   
 
 const EventModalBody = ({close,updatePost,ePost}) => {
+  const {user} = useContext(AuthContext);
     const modalRef = useRef();
     const [error,setError] = useState();
     const {register,handleSubmit} = useForm({
@@ -165,7 +168,7 @@ const EventModalBody = ({close,updatePost,ePost}) => {
       };
   return (
     <div>
-       <form onSubmit={handleSubmit(submit)}>
+     {Date.now(user?.primium?.endingDate) < Date.now() ? <form onSubmit={handleSubmit(submit)}>
       <div className="space-y-12">
         <div className="border-b border-gray-900/10 pb-12">         
           {error && 
@@ -293,7 +296,9 @@ const EventModalBody = ({close,updatePost,ePost}) => {
           Save
         </button>
       </div>
-    </form>
+    </form> :<> <p className='m-6 font-serif text-lg'>Sorry, Only premium members can create an event !!</p>
+    <Button className='bg-blue-950 enabled:hover:bg-black p-0 ml-10' onClick={()=>{window.location.href = '/premium'}}>Go with Premium</Button>
+    </>}
     </div>
   )
 }

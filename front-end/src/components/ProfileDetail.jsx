@@ -6,8 +6,8 @@ import EditProfile from './EditProfile';
 import defaultProfile from '../assets/defaultProfile.png'
 import { postContext } from '../store/Post';
 import { useContext,useEffect,useState } from 'react';
-import Post from './Post';
-import { useParams } from 'react-router-dom';
+import { URL } from '../axiosConfig';
+
 
   
   export default function Example({user,userData,param}) {
@@ -23,7 +23,7 @@ import { useParams } from 'react-router-dom';
     },[posts])
     const button = (<HiPencil size={24}  className='ml-auto mt-1'/>)
     const profileIcon = (<div className='w-14 h-12  overflow-hidden rounded-full border-2 border-gray-300 shadow-md'>
-    <img className='w-full h-full object-cover bg-transparent' src={ user.profileImg ? `http://localhost:3000/${user.profileImg.replace('uploads\\', '')}` : defaultProfile} alt="" />
+    <img className='w-full h-full object-cover bg-transparent' src={ user.profileImg ? `${URL}/${user.profileImg.replace('uploads\\', '')}` : defaultProfile} alt="" />
   </div>)
     return (
       <div className="relative overflow-y-hidden bg-gradient-to-r from-gray-100 to-gray-300 py-8 lg:py-5 ">
