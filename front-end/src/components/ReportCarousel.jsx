@@ -73,7 +73,7 @@ const Carousel = () => {
 
   async function block (id){
     try {
-        await axios.get(`/block/?id=${id}`)
+        await axios.get(`/admin/block/?id=${id}`)
         allReports();
     } catch (error) {
         console.log(error);
@@ -81,7 +81,7 @@ const Carousel = () => {
    }
    async function unblock (id){
     try {
-        await axios.get(`/unblock/?id=${id}`)
+        await axios.get(`/admin/unblock/?id=${id}`)
         allReports();
     } catch (error) {
         console.log(error);
@@ -97,23 +97,23 @@ const Carousel = () => {
     {data.length != 0 ? data.map((data, i) => (
       <animated.div key={i} style={{ ...props, display: i === index ? 'block' : 'none' }}>
         <div className="lg:flex absolute block w-full h-full -translate-x-1/2 -translate-y-1/3 top-1/3 left-1/2">
-          <div className='w-3/5 ml-16 my-3 overflow-y-auto'>
+          <div className='lg:w-3/5 w-full lg:ml-16 ml-1 my-3 overflow-y-auto scrollNone'>
             <Post post={data.postId} key={data._id}/>
           </div>
-          <div className='w-1/2 overflow-y-auto'>
+          <div className='lg:w-1/2 w-full overflow-y-auto'>
           <div className='flex'>
               <Modal confirmation='Are you sure you want to remove this post ?' user={data.postId}  body={Confirm} updatePost={()=>{remove(data.postId)}}
-              button={(<Button className='m-3'>Remove Post</Button>)}/>
-               {data.postId.userId.active ?  <Button onClick={()=>{block(data.postId.userId._id)} } className="m-3">Block User
+              button={(<Button className='m-3 dark:bg-black bg-gray-500'>Remove Post</Button>)}/>
+               {data.postId.userId.active ?  <Button onClick={()=>{block(data.postId.userId._id)} } className="m-3 bg-gray-500 dark:bg-black">Block User
                 {<HiBan size={19} /> }
-              </Button> :  <Button onClick={()=>{unblock(data.postId.userId._id)}} className="m-3">Unblock User
+              </Button> :  <Button onClick={()=>{unblock(data.postId.userId._id)}} className="m-3 bg-gray-500 dark:bg-black">Unblock User
                 {<HiCheck size={19}  /> }
               </Button>}
               </div>
             
             {data.details.map(i => (
               <div className='flex m-3'>
-                <div className="flex items-center bg-slate-100 w-4/5">
+                <div className="flex items-center bg-slate-100 lg:w-4/5 w-full">
                   <img src={i?.userId.profileImg ? `${URL}/${i.userId.profileImg.replace('uploads\\', '')}` : defaultProfile} alt="User Avatar" className="w-12 h-12 rounded-full mx-3" />
                   <a href={`/user/${i.userId._id}`} className='ml-3 w-3/5'>
                     <p className="text-gray-800 font-semibold">{i?.userId.name}</p>
@@ -123,9 +123,9 @@ const Carousel = () => {
                   </a>
                 </div>
                <div className='bg-slate-100 text-center'>
-               {i?.userId.active ?  <Button onClick={()=>{block(i?.userId._id)} } className="m-3 h-10 mr-10">Block
+               {i?.userId.active ?  <Button onClick={()=>{block(i?.userId._id)} } className="bg-gray-500 dark:bg-black m-3 h-10 mr-10">Block
                 {<HiBan size={18} /> }
-              </Button> :  <Button onClick={()=>{unblock(i?.userId._id)}} className="m-3 h-10">Unblock
+              </Button> :  <Button onClick={()=>{unblock(i?.userId._id)}} className="m-3 h-10 bg-gray-500 dark:bg-black">Unblock
                 {<HiCheck size={18}  /> }
               </Button>}
                </div>
@@ -138,7 +138,7 @@ const Carousel = () => {
     )) : <p className='text-center text-2xl my-14'>No Reports....</p>}
   </div>
       {/* Slider controls */}{ data.length !=0 &&<>
-      <button type="button" className=" ml-2 absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" onClick={() => setIndex((index - 1 + data.length) % data.length)} data-carousel-prev>
+      <button type="button" className=" ml-0 lg:ml-2 absolute top-0 start-0 z-30 flex items-center justify-center h-full px-0 lg:px-4 cursor-pointer group focus:outline-none" onClick={() => setIndex((index - 1 + data.length) % data.length)} data-carousel-prev>
         <span className="inline-flex items-center justify-center w-10 h-10 rounded-full dark:bg-white/30 bg-gray-800/30 dark:group-hover:bg-white/50 group-hover:bg-gray-800/60 group-focus:ring-4 dark:group-focus:ring-white group-focus:ring-gray-800/70 group-focus:outline-none">
           <svg className="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 1 1 5l4 4"/>

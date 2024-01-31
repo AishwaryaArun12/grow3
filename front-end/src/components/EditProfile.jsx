@@ -18,15 +18,35 @@ export default function Example({user,close,userData}) {
   const [error, setError] = useState();
   
   const handleSubmit =async (e)=>{
+    const nameRegex = /^[A-Za-z ]{2,}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const textRegex = /^[A-Za-z0-9\s.,'-]+$/;
+    const ageRegex = /^\d+$/;
     e.preventDefault();
-    try {
-      await axios.patch('/editProfile',{name,email,country,region,location,description,headline,age,qualification,userType})
-       setError();
-       userData();
-      close();
-    } catch (error) {
-      setError('Internal server error, Changes not saved.')
+    if(!nameRegex.test(name.trim()) || name.trim() == ""){
+      setError('Name should be alphabets and minimum length of 2 ');
+    }else if(!emailRegex.test(email.trim()) || email.trim() == ""){
+      setError('Email should follows the standard email format')
+    }else if(!textRegex.test(country.trim()) || country.trim() == "" ||
+    !textRegex.test(region.trim()) || region.trim() == "" || 
+    !textRegex.test(location.trim()) || location.trim() == "" || 
+    !textRegex.test(description.trim()) || description.trim() == "" ||
+    !textRegex.test(headline.trim()) || headline.trim() == "" ||
+    !textRegex.test(qualification.trim()) || qualification.trim() == "" ){
+      setError('Inputs should be valid')
+    }else if(!ageRegex.test(age)){
+      setError('Age should be greater than 0 and should be numeric.')
+    }else{
+      try {
+        await axios.patch('/editProfile',{name,email,country,region,location,description,headline,age,qualification,userType})
+         setError();
+         userData();
+        close();
+      } catch (error) {
+        setError('Internal server error, Changes not saved.')
+      }
     }
+   
   }
   return (
     <form onSubmit={handleSubmit}>
@@ -48,6 +68,7 @@ export default function Example({user,close,userData}) {
                 <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                   
                   <input
+                  required
                     type="text"
                     name="username"
                     id="username"
@@ -65,6 +86,7 @@ export default function Example({user,close,userData}) {
               </label>
               <div className="mt-2">
                 <input
+                required
                   type="text"
                   name="headline"
                   id="headline"
@@ -82,6 +104,7 @@ export default function Example({user,close,userData}) {
               </label>
               <div className="mt-2">
                 <textarea
+                required
                   id="about"
                   name="about"
                   rows={3}
@@ -101,6 +124,7 @@ export default function Example({user,close,userData}) {
               </label>
               <div className="mt-2">
                 <input
+                required
                   type="text"
                   name="qualification"
                   id="qualification"
@@ -118,6 +142,7 @@ export default function Example({user,close,userData}) {
               </label>
               <div className="mt-2">
                 <input
+                required
                   type="text"
                   name="location"
                   id="location"
@@ -135,6 +160,7 @@ export default function Example({user,close,userData}) {
               </label>
               <div className="mt-2">
                 <input
+                required
                   id="email"
                   name="email"
                   type="email"
@@ -194,7 +220,7 @@ export default function Example({user,close,userData}) {
             <div className="sm:col-span-3">
           <label htmlFor="country" className="block text-sm font-medium leading-6 text-gray-900">Country</label>
           <div className="mt-2">
-            <select id="userType" onChange={(e)=>{setUserType(e.target.value)}} name="userType"  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+            <select required id="userType" onChange={(e)=>{setUserType(e.target.value)}} name="userType"  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
               <option value='Investor' selected={userType == 'Investor'} >Investor</option>
               <option value='enterpreneur' selected={userType == 'enterpreneur'}>Enterpreneur</option>
               

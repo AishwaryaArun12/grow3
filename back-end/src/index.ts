@@ -12,6 +12,8 @@ import chatRoutes from './infrastructure/routes/chatRoutes'
 import { jwtAuth } from './infrastructure/middlewares/jwtAuth';
 import { adminJwtAuth } from './infrastructure/middlewares/admin';
 import configureSocket from './config/socket';
+import eventRouter from './infrastructure/routes/eventRoutes';
+import { userBlock } from './infrastructure/middlewares/userBlock';
 
 
 const port = parseInt( process.env.PORT);
@@ -25,10 +27,11 @@ app.use(passport.session());
   app.use('/', authRoutes);
   app.use('/auth', passportRoute);
   app.use('/admin',adminJwtAuth, adminRouter);
-  app.use('/',jwtAuth, userRouter);
+  app.use('/',jwtAuth,userBlock, userRouter);
   app.use('/post',jwtAuth, postRoutes);
   app.use('/subscription', subscriptionRoutes )
-  app.use('/chat', chatRoutes )
+  app.use('/chat',jwtAuth, chatRoutes )
+  app.use('/event',jwtAuth, eventRouter)
 
   const server = new http.Server(app);
   const io = configureSocket(server)

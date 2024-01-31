@@ -48,25 +48,33 @@ const Comment = ({comment}) => {
         });
       };
       const addReply = async()=>{
-        try {
-            await axios.patch('/post/add_reply',{commentId: comment._id,userId:user._id, reply:ReplyComment, time : new Date(),mention : mention._id});
-            setMention('');
-            setReplyComment('')
-            setReply(!reply)
-            getAllPosts();
-        } catch (error) {
-            setError(error.message)
+        if(ReplyComment.trim() == ''){
+          setError("Can't send empty reply")
+        }else{
+          try {
+              await axios.patch('/post/add_reply',{commentId: comment._id,userId:user._id, reply:ReplyComment, time : new Date(),mention : mention._id});
+              setMention('');
+              setReplyComment('')
+              setReply(!reply)
+              getAllPosts();
+          } catch (error) {
+              setError(error.message)
+          }
         }
       }
       const edit =async ()=>{
-        try {
-          await axios.patch('/post/edit_comment',{id: comment._id, data : {comment:editComment}})
-          
-          getAllPosts();
-          setError()
-          setEditInput(false);
-        } catch (error) {
-          setError(error.message)
+        if(editComment.trim() == ''){
+          setError("Can't send empty reply")
+        }else{
+          try {
+            await axios.patch('/post/edit_comment',{id: comment._id, data : {comment:editComment}})
+            
+            getAllPosts();
+            setError()
+            setEditInput(false);
+          } catch (error) {
+            setError(error.message)
+          }
         }
       }
       const toggleColour = async(event) => {

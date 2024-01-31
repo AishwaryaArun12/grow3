@@ -3,13 +3,14 @@ import SideBar from '../components/SideBar';
 import { Flowbite } from 'flowbite-react';
 import { Link,  Element, animateScroll as scroll,  } from 'react-scroll';
 import { postContext } from '../store/Post';
-import axios from '../axiosConfig'
+import axios,{URL} from '../axiosConfig'
 import { useParams } from 'react-router-dom';
 import ProfileDetail from '../components/ProfileDetail'
 import coverImg from '../assets/cover.jpg'
 import defaultProfile from '../assets/defaultProfile.png'
 import { Button } from 'flowbite-react';
 import Post from '../components/Post';
+import { FaCalendarAlt} from 'react-icons/fa';
 
 
 const AdminUserProfile = () => {
@@ -19,6 +20,7 @@ const AdminUserProfile = () => {
     const {id} = useParams();
     const [targetDiv, setTargetDiv] = useState('mydiv');
     const [foundInField,setFoundInField] = useState();
+    const [events,setEvents] = useState();
 
     useEffect(() => {
       // Check the window width and set the targetDiv accordingly
@@ -45,12 +47,12 @@ const AdminUserProfile = () => {
        axios.get('/post/getallposts/0/0').then(res=>{
         setUserPosts(()=> res.data.posts.filter(i=>i.userId._id == id))
        })
-      
+       axios.get(`/event/user_event/${id}`).then(res=>{
+         setEvents(res.data.result);
+       })
         
       },[posts])
-    const initialButton = [{name : 'Posts', current : 'true'},
-    {name: 'Connects',current: false},
-    {name : 'Views', current : false},
+    const initialButton = [{name : 'Posts', current : true},
      {name : 'Events', current : false},
      ]
     const [buttons,setButtons] = useState(initialButton);
@@ -147,7 +149,53 @@ const AdminUserProfile = () => {
             )
            })}
             </div>
-           {buttons[0].current && userPosts.map((i,index)=>(<Post post={i} key={index}/>))}
+           {buttons[0].current && (userPosts.length == 0 ? <p>No Posts Yet!</p> : userPosts.map((i,index)=>(<Post post={i} key={index}/>)))}
+           {buttons[1].current && (events.length == 0 ? <p>No Events Yet!</p> : events?.map((event,index)=>(<>
+          <div className=' max-w-full mb-4 rounded-lg'>
+          <div className='text-end'>
+       
+       </div>
+                    <div className="w-full p-2 rounded-lg shadow-xl bg-gray-300">
+                    <img
+                        className="object-cover w-full  lg:h-96"
+                        src={`${URL}/${event?.media?.replace('uploads\\', '')}`}
+                        alt="image"
+                    />
+                    <div className="pl-2">
+                       <div >
+                       <h2 className="text-4xl p-3 font-semibold tracking-tight text-blue-900">
+                            {event.name}
+                        </h2>
+                        <div className='flex'>
+                            <FaCalendarAlt size={20}/>
+                            <p className='mx-3'>{event.startTime}<span className='mx-2 '>-</span></p>
+                            <p className='mx-3'>{event.endTime}</p>
+                        </div>
+                        <h4 className="text-xl p-3 font-semibold tracking-tight text-blue-900">
+                          <div className='flex'>
+                          <p>Event By -</p>
+                         <div className='flex mt-5 w-full'>
+                                <div className='w-16 h-14 mt-3 overflow-hidden rounded-full border-2 border-gray-300 shadow-md'>
+                                <img className='w-full h-full object-cover bg-transparent' src={ event.userId?.profileImg ? `${URL}/${event.userId.profileImg.replace('uploads\\', '')}` : defaultProfile} alt="" />
+                                </div>
+                                <div className='h-auto rounded-full  w-full ml-1 p-2 shadow-md border-gray-300 border-2 hover:bg-gray-200'>
+                                <p className=' font-mono'>{event.userId.name}</p>
+                                <p className=' font-thin text-base'>{event.userId.headline}</p>
+                                </div>
+                            </div>
+                            </div></h4>
+                            <div>
+                            {event.attendees.length <= 1 ? <p className=' text-blue-950 font-serif text-lg'> {event.attendees.length} Attendee </p> : 
+                                <p className='p-2 text-blue-950 font-serif text-lg'> {event.attendees.length} Attendees</p>}
+                               <p className='p-2 text-blue-950 font-serif text-lg'> {event.description}</p>
+                            </div>
+                       </div>
+                        
+                    </div>
+                    </div>
+                    </div>
+          <hr className='bg-black'/>
+          </>)))}
           
           </div>
 

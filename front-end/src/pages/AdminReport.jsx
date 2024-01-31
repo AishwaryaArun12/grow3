@@ -10,12 +10,12 @@ const AdminReport = () => {
   return (
     <div>
        <Flowbite>
-  <div className='sm:block lg:flex h-screen dark:bg-gradient-to-br from-zinc-900 via-gray-700 to-zinc-900'>
+  <div className='sm:block lg:flex -mb-2 dark:bg-gradient-to-br from-zinc-900 via-gray-700 to-zinc-900'>
     <div>
     <SideBar/>
    
     </div>
-    <div className=' bg-slate-200 dark:bg-slate-700 w-full'>
+    <div className=' bg-slate-200 w-full dark:bg-gradient-to-br from-zinc-900 via-gray-700 to-zinc-900'>
         
     <ReportCarousel />
     </div>

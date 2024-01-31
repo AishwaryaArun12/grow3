@@ -15,7 +15,6 @@ const NewMsg = ({conversation,sender,set}) => {
     const socket = useRef(useSocket())
 
     useEffect(()=>{
-
       
         if(arrivalMessage && conversation.members.some(member => member._id === arrivalMessage.sender)){
             set();
@@ -44,7 +43,6 @@ const NewMsg = ({conversation,sender,set}) => {
   
 
     const submit = async()=>{
-
        if(value.trim() != 0){
          try {
              await axios.post('/chat/create_message',{conversationId,sender,text:value})
@@ -67,7 +65,6 @@ const NewMsg = ({conversation,sender,set}) => {
     <div className="flex flex-row items-center h-16 rounded-xl fixed bottom-5 lg:left-1/4 -left-1 bg-white w-full lg:w-3/5 lg:px-4">
          {emoji && <div className='absolute z-50 bottom-16 w-full bg-black'><EmojiPicker searchPlaceholder='      search' categories={['suggested','smileys_people',]}  width={850} height={350} onEmojiClick={(emoji)=>{setValue(prev=> prev+emoji.emoji);}} /></div>}
     {/* <div>
-=======
 
       <button className="flex items-center justify-center text-gray-400 hover:text-gray-600">
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -75,12 +72,13 @@ const NewMsg = ({conversation,sender,set}) => {
         </svg>
       </button>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> event
     </div> */}
     <div className="flex-grow ml-4">
       <div className="relative w-full">
         <input required onChange={(e)=>{setValue(e.target.value)}} value={value} type="text" className="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10" />
-=======
-   
 
         <button onClick={()=>{setEmoji(!emoji)}} className="absolute flex items-center justify-center h-full w-12 right-0 top-0 text-gray-400 hover:text-gray-600">
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

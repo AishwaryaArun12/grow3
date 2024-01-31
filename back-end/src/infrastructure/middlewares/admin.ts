@@ -17,7 +17,7 @@ export const adminJwtAuth = async(req : Request,res : Response,next : NextFuncti
         next();
     }
     }else{
-        throw new Error("Unauthorized");
+        res.status(401).json({message: 'Unauthorized'})
     }
     
   } catch (error) {

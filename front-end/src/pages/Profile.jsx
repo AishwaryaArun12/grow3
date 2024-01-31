@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import Nav from '../components/Nav'
 import defaultProfile from '../assets/defaultProfile.png'
 import coverImg from '../assets/cover.jpg';
-import axios from '../axiosConfig';
+import axios ,{URL} from '../axiosConfig';
 import ProfileDetail from '../components/ProfileDetail'
 import { MdPhotoLibrary } from 'react-icons/md'
 import { FaCalendarAlt} from 'react-icons/fa';
@@ -14,6 +14,8 @@ import { postContext } from '../store/Post';
 import Post from '../components/Post';
 import { Link,  Element, animateScroll as scroll,  } from 'react-scroll';
 import FriendNotification from '../components/FriendNotification';
+import EventModalBody from '../components/EventModalBody';
+import Confirm from '../components/Confirm';
 
 
 const Profile = () => {
@@ -21,6 +23,9 @@ const Profile = () => {
     const {posts} = useContext(postContext)
     const [userPosts,setUserPosts] = useState([]);
     const [targetDiv, setTargetDiv] = useState('mydiv');
+    const [events,setEvents] = useState([]);
+    const [dropdown,setDropdown] = useState(false);
+    const [ registered,setRegistered] = useState([]);
 
     useEffect(() => {
       // Check the window width and set the targetDiv accordingly
@@ -50,8 +55,8 @@ const Profile = () => {
 
     const initialButton = [{name: 'Personal Details',current: true},
     {name : 'Posts', current : false},
-    //  {name : 'Events', current : false},
-    //  {name : 'Notifications', current : false}
+      {name : 'Events', current : false},
+      {name : 'Registered Events', current : false}
   ]
     const [buttons,setButtons] = useState(initialButton);
    
@@ -62,6 +67,15 @@ const Profile = () => {
       })
       
     },[posts])
+    async function getEvents(){
+      const event = await axios.get(`/event/user_event/${localStorage.getItem('id')}`)
+      setEvents(event.data.result);
+    }
+
+    async function getRegistered(){
+      const event = await axios.get('/event/getallevents')
+      setRegistered(event.data.events.filter(event=>event.attendees.includes(localStorage.getItem('id'))))
+    } 
 
     async function userData(){  
       const user = await axios.get('/getUser');
@@ -69,6 +83,8 @@ const Profile = () => {
     }
     useEffect(()=>{
         userData();
+        getEvents();
+        getRegistered();
     },[])
      
       async function uploadCover(file){
@@ -102,12 +118,12 @@ const Profile = () => {
        }
 
     const profileIcon = (<div className='w-14 h-12  overflow-hidden rounded-full border-2 border-gray-300 shadow-md'>
-    <img className='w-full h-full object-cover bg-transparent' src={ user.profileImg ? `http://localhost:3000/${user.profileImg.replace('uploads\\', '')}` : defaultProfile} alt="" />
+    <img className='w-full h-full object-cover bg-transparent' src={ user.profileImg ? `${URL}/${user.profileImg.replace('uploads\\', '')}` : defaultProfile} alt="" />
   </div>)
   
     const buttonContent = (<div className='flex mt-5 '>
     <div className='w-14 h-12  overflow-hidden rounded-full border-2 border-gray-300 shadow-md'>
-      <img className='w-full h-full object-cover bg-transparent' src={ user.profileImg ? `http://localhost:3000/${user.profileImg.replace('uploads\\', '')}` : defaultProfile} alt="" />
+      <img className='w-full h-full object-cover bg-transparent' src={ user.profileImg ? `${URL}/${user.profileImg.replace('uploads\\', '')}` : defaultProfile} alt="" />
     </div>
     <div className='h-12 rounded-full w-full ml-1 p-2 shadow-md border-gray-300 border-2 hover:bg-gray-200'>
       <p>Start a post...</p>
@@ -117,23 +133,49 @@ const Profile = () => {
   <MdPhotoLibrary size={27} color="blue" className='opacity-80' />
   <p>Media</p>
   </div>)
+
+  const remove =async (event)=>{
+    try {
+      await axios.delete(`/event/delete/${event._id}/${event.media}`);
+      getEvents();
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const attend = async(id)=>{
+    try {
+      await axios.patch('/event/add_attendee', {id:localStorage.getItem('id'),eventId : id})
+      getRegistered();
+    } catch (error) {
+      console.log('error');
+    }
+ }
+ const cancel = async(id)=>{
+  try {
+    await axios.patch('/event/remove_attendee', {id:localStorage.getItem('id'),eventId : id})
+    getRegistered();
+  } catch (error) {
+    console.log('error');
+  }
+}
    
   return (
     <div className='h-auto'>
         <div className='h-16 w-full '>
         <Nav/>
         </div>
-        <div className='block lg:flex flex-1 w-full'  style={{height : '645px'}} >
-            <div className= 'lg:fixed block bg-gray-100  lg:w-4/12  mb-0 '  >
+        <div className='block lg:flex flex-1 w-full'  style={{height : '640px'}} >
+            <div className= 'lg:fixed block h-full bg-gray-100  lg:w-4/12  mb-0 '  >
               <div className='bg-white w-11/12 my-4 lg:m-4 p-3 h-40 border-2 rounded-xl'>
             
                     <Modal profileIcon= {profileIcon} button={buttonContent} title='What do you want to talk about' body={PostModalbody}/>
                     <div className='flex justify-around'>
                       <Modal button={imageButton} profileIcon= {profileIcon} title='What do you want to talk about' body={PostModalbody}/>
-                      <div className='flex pt-4'>
+                      <Modal button={(<div className='flex pt-4'>
                       <FaCalendarAlt size={25} color="black" className='opacity-80' />
                       <p>Event</p>
-                      </div>
+                      </div>)} profileIcon= {profileIcon} title='Create an event' body={EventModalBody}/>
                     </div>
               </div >
               <Element name='button'></Element>
@@ -161,7 +203,7 @@ const Profile = () => {
 
             </div>
            
-            <div  className='bg-gray-100 m-0 p-0 lg:mx-20 lg:p-4 lg:px-4 w-full lg:w-7/12 h-fit  '>
+            <div  className='bg-gray-100 m-0 p-0 lg:mx-20 lg:p-4 lg:px-4 w-full lg:w-7/12   '>
             
            
              {buttons[0].current && <div>
@@ -210,7 +252,7 @@ const Profile = () => {
                   
                 </div>
                 <div className=''>
-                    <ProfileDetail userData={userData} user={user} posts={[]} events={[]} param={true}/>
+                    <ProfileDetail userData={userData} user={user} posts={posts} events={events} param={true}/>
                 </div>
                 <div className='w-full'>
                   <FriendNotification user={user} userData={userData}/>
@@ -219,7 +261,7 @@ const Profile = () => {
               </div>}
               <Element name='mydiv' id='mydiv'></Element>
              {buttons[1].current && <div >
-          <h2 className='m-2 p-1 text-lg font-bold'>My Posts</h2>
+          <h2 className='p-3 rounded-2xl bg-gray-50 m-2 text-lg font-bold'>My Posts</h2>
           
           <div className='m-1 lg:px-2 h-full ' >
         {userPosts.length != 0 ? userPosts.map((post) => (
@@ -227,18 +269,152 @@ const Profile = () => {
           <Post key={post.id}  post={post} />
           <hr/>
           </>
-        )) : <h2 className='text-xl font-bold ml-12'>No Posts Yet</h2>}
+        )) : <h2 className='text-xl font-bold ml-12 mt-32'>No Posts Yet</h2>}
        
         </div>
         
         
         </div>}
-        {/* <Link to={targetDiv}   activeClass="active" 
-          spy={true} 
-          smooth={true} 
-          offset={50} 
-          duration={500} 
-          onClick={() => console.log('Link Clicked')}> */}
+        {buttons[2].current && <div>
+          <h2 className='m-2 p-3 rounded-2xl bg-gray-50 text-lg font-bold'>My Events</h2>
+          
+          <div className='m-1 lg:px-2 h-full ' >
+        {events.length != 0 ? events.map((event) => (
+          <>
+          <div className=' max-w-full mb-4 rounded-lg'>
+          <div className='text-end'>
+        <button
+          id="dropdownComment1Button"
+          onClick={()=>{setDropdown(!dropdown)}}
+          className="my-3 inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 dark:text-gray-400 hover:bg-white rounded-lg bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+          type="button"
+        >
+          <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
+            <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
+          </svg>
+          <span className="sr-only">Comment settings</span>
+        </button>
+        {/* Dropdown menu */}
+        <div
+          id="dropdownComment1"
+          className={`${dropdown ? 'absolute' : 'hidden'} text-start right-24 z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600`}
+        >
+          <ul className="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconHorizontalButton">
+            <li>
+              <Modal 
+                button={(<p onClick={()=>{setDropdown(!dropdown)}} className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</p>)} 
+                body={EventModalBody} updatePost={getEvents} post={event}/>
+            </li>
+            <li>
+              <div>
+              <Modal confirmation='Are you sure you want to remove this Event ?'  body={Confirm} updatePost={()=>{remove(event)}}
+              button={(<p onClick={()=>{setDropdown(!dropdown)}} className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Remove</p>)}/>
+              </div>
+            </li>
+           
+          </ul>
+        </div>
+       </div>
+                    <div className="w-full p-2 rounded-lg shadow-xl bg-gray-300">
+                    <img
+                        className="object-cover w-full  lg:h-96"
+                        src={`${URL}/${event?.media?.replace('uploads\\', '')}`}
+                        alt="image"
+                    />
+                    <div className="pl-2">
+                       <div >
+                       <h2 className="text-4xl p-3 font-semibold tracking-tight text-blue-900">
+                            {event.name}
+                        </h2>
+                        <div className='flex'>
+                            <FaCalendarAlt size={20}/>
+                            <p className='mx-3'>{event.startTime}<span className='mx-2 '>-</span></p>
+                            <p className='mx-3'>{event.endTime}</p>
+                        </div>
+                        <h4 className="text-xl p-3 font-semibold tracking-tight text-blue-900">
+                          <div className='flex'>
+                          <p>Event By -</p>
+                         <div className='flex mt-5 w-full'>
+                                <div className='w-16 h-14 mt-3 overflow-hidden rounded-full border-2 border-gray-300 shadow-md'>
+                                <img className='w-full h-full object-cover bg-transparent' src={ event.userId?.profileImg ? `${URL}/${event.userId.profileImg.replace('uploads\\', '')}` : defaultProfile} alt="" />
+                                </div>
+                                <div className='h-auto rounded-full  w-full ml-1 p-2 shadow-md border-gray-300 border-2 hover:bg-gray-200'>
+                                <p className=' font-mono'>{event.userId.name}</p>
+                                <p className=' font-thin text-base'>{event.userId.headline}</p>
+                                </div>
+                            </div>
+                            </div></h4>
+                            <div>
+                            {event.attendees.length <= 1 ? <p className=' text-blue-950 font-serif text-lg'> {event.attendees.length} Attendee </p> : 
+                                <p className='p-2 text-blue-950 font-serif text-lg'> {event.attendees.length} Attendees</p>}
+                               <p className='p-2 text-blue-950 font-serif text-lg'> {event.description}</p>
+                            </div>
+                       </div>
+                        
+                    </div>
+                    </div>
+                    </div>
+          <hr className='bg-black'/>
+          </>
+        )) : <h2 className='text-xl font-bold ml-12'>No Events Yet</h2>}
+          </div></div>}
+          {buttons[3].current && <div>
+          <h2 className='m-2 p-3 rounded-2xl bg-gray-50 text-lg font-bold'>My Registered Events</h2>
+          
+          <div className='m-1 lg:px-2 h-full ' >
+        {registered.length != 0 ? registered.map((event) => (
+          <>
+          <div className=' p-6 max-w-full rounded-lg'>
+                    <div className="w-full p-2 rounded-lg shadow-xl bg-gray-300">
+                    <img
+                        className="object-cover w-full  lg:h-96"
+                        src={`${URL}/${event?.media?.replace('uploads\\', '')}`}
+                        alt="image"
+                    />
+                    <div className="pl-2">
+                       <div >
+                       <h2 className="text-4xl p-3 font-semibold tracking-tight text-blue-900">
+                            {event.name}
+                        </h2>
+                        <div className='flex'>
+                            <FaCalendarAlt size={20}/>
+                            <p className='mx-3'>{event.startTime}<span className='mx-2 '>-</span></p>
+                            <p className='mx-3'>{event.endTime}</p>
+                        </div>
+                        <h4 className="text-xl p-3 font-semibold tracking-tight text-blue-900">
+                          <div className='flex'>
+                          <p>Event By -</p>
+                         <div className='flex mt-5 w-full'>
+                                <div className='w-16 h-14 mt-3 overflow-hidden rounded-full border-2 border-gray-300 shadow-md'>
+                                <img className='w-full h-full object-cover bg-transparent' src={ event.userId?.profileImg ? `${URL}/${event.userId.profileImg.replace('uploads\\', '')}` : defaultProfile} alt="" />
+                                </div>
+                                <div className='h-auto rounded-full  w-full ml-1 p-2 shadow-md border-gray-300 border-2 hover:bg-gray-200'>
+                                <p className=' font-mono'>{event.userId.name}</p>
+                                <p className=' font-thin text-base'>{event.userId.headline}</p>
+                                </div>
+                            </div>
+                            </div></h4>
+                            <div>
+                            {event.attendees.length <= 1 ? <p className=' text-blue-950 font-serif text-lg'> {event.attendees.length} Attendee</p> : 
+                                <p className=' text-blue-950 font-serif text-lg'> {event.attendees.length} Attendees</p>}
+                               <p className='p-2 text-blue-950 font-serif text-lg'> {event.description}</p>
+                            </div>
+                       </div>
+                        <div className='flex justify-around m-5'>
+                        
+                        {event?.attendees?.includes(localStorage.getItem('id'))? <button onClick={()=>{cancel(event._id)}} className="px-4 py-2 text-sm w-28 text-blue-100 bg-gradient-to-br from-black via-blue-900 to-black rounded shadow">
+                            Cancel
+                        </button> : <button onClick={()=>{attend(event._id)}} className="px-4 py-2 text-sm w-28 text-blue-100 bg-gradient-to-br from-black via-blue-900 to-black rounded shadow">
+                           Attend
+                        </button>}
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+          <hr className='bg-black'/>
+          </>
+        )) : <h2 className='text-xl mt-40 font-bold ml-20'>No Events Yet</h2>}
+          </div></div>}
             <a onClick={scrollToTop}>
             <Button className='focus:ring-0 bg-gradient-to-br from-blue-900 via-black to-blue-900 fixed right-36 bottom-12 rounded-full w-12 h-12 '>
               <svg className="h-5 w-5  animate-bounce" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">

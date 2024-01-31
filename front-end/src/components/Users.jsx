@@ -37,7 +37,7 @@ export default function Component() {
  
    async function block (id){
     try {
-        await axios.get(`/block/?id=${id}`)
+        await axios.get(`/admin/block/?id=${id}`)
         getUsers();
     } catch (error) {
         console.log(error);
@@ -45,7 +45,7 @@ export default function Component() {
    }
    async function unblock (id){
     try {
-        await axios.get(`/unblock/?id=${id}`)
+        await axios.get(`/admin/unblock/?id=${id}`)
         getUsers();
     } catch (error) {
         console.log(error);
@@ -57,8 +57,8 @@ export default function Component() {
                   <input  value={value} onChange={handleChange}  placeholder='Find User....' className='h-10 dark:placeholder:text-gray-200 dark:bg-transparent  placeholder:text-gray-700 bg-gray:200 rounded-full  text-black dark:text-white w-full ml-1 p-2 shadow-md border-gray-500 border-2 ' />
                  
                 </div>
-    <div className="overflow-x-auto lg:m-16">
-      <Table hoverable>
+    <div className="overflow-x-auto lg:mx-16 lg:mt-8 overflow-y-auto scrollNone h-[520px]">
+      <Table hoverable >
         <Table.Head>
           <Table.HeadCell>No.</Table.HeadCell>
           <Table.HeadCell>User name</Table.HeadCell>

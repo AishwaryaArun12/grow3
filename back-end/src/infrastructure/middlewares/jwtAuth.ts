@@ -32,7 +32,7 @@ export const jwtAuth = async(req : Request,res : Response,next : NextFunction)=>
     }
     
   } catch (error) {
-    console.log(error,'eeeeeeeeeeeee')
+    console.log('eeeeeeeeeeeee')
     res.status(401).json({ message: error.message });
   }
 }

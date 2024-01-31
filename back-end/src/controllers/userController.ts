@@ -1,8 +1,10 @@
 import { Request, Response, response } from "express";
-import { userService } from "domain/services/userServices";
+import { userService } from "domain/services/userService";
 import Jwt from 'jsonwebtoken';
 const jwtSecret = process.env.JWT_SECRET;
 import { promises as fsPromises } from 'fs';
+import dotenv from 'dotenv';
+dotenv.config();
 
 
 
@@ -59,8 +61,8 @@ export class userController {
     async getUser(req: Request, res: Response) {
         try {
             const id = req.headers['id'] as string;
-            console.log(id)
-            if(id == 'ADMIN'){
+           
+            if(id == process.env.ADMIN){
                 res.status(200).json({id });
                 return;
             }
@@ -102,13 +104,20 @@ export class userController {
     async login(req: Request, res: Response) {
         try {
             const { email, password } = req.body;
-            req.session.email = email;
+            
+            if(email == process.env.EMAIL && password == process.env.PASSWORD){
+                const token = Jwt.sign({ id : process.env.ADMIN }, jwtSecret, { expiresIn: '5m' });
+            
+            const refreshToken = Jwt.sign({id : process.env.ADMIN }, jwtSecret, { expiresIn: '7d' });
+                res.status(200).json({res:'verified',token,refreshToken,id:'loginAdmin'})
+                return;
+            }
             const result = await this.UserService.login(email, password);
              if (result == false) {
                 res.status(404).json({ res: 'invalid credentials' })
 
             } else if (result == 'user blocked') {
-                res.status(401).json({ res: 'user blocked' })
+                res.status(403).json({ res: 'user blocked' })
             } else if(result == true) {
                 const user = await this.UserService.getUserByEmail(email)
                 const token = Jwt.sign({ id: user._id }, jwtSecret, { expiresIn: '5m' });
@@ -282,6 +291,14 @@ export class userController {
            res.status(200).json({users:result})
         } catch (error) {
             res.status(500).json({ success: false, message: 'Internal Server Error' });
+        }
+    }
+    async razorpay(req:Request, res: Response){
+        try {
+            const orderId = await this.UserService.razorpay(req.body.amt);
+            res.status(200).json({orderId})
+        } catch (error) {
+            res.status(500).json(error);
         }
     }
 }

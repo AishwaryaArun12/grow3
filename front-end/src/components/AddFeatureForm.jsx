@@ -2,16 +2,24 @@ import React,{useState} from 'react'
 import axios from '../axiosConfig';
 
 const AddFeatureForm = ({close}) => {
-    const [feature,setFeature] = useState();
+    const [feature,setFeature] = useState('');
     const [error,setError] = useState();
     const handleSubmit =async (e)=>{
         e.preventDefault();
-        try {
+        const regex = /^\d+$/;
+        if(feature.trim()== ''){
+          setError("Sorry, Can't add empty feature")
+        }else if( regex.test(feature)){
+          setError("Can not save only numbers as a feature.")
+        }else{
+          try {
             const res = await axios.patch('/subscription/add_feature',{feature});
             close()
         } catch (error) {
             setError('Internal server error');
         }
+        }
+        
     }
   return (
     <div>

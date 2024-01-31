@@ -74,7 +74,6 @@ const ChatBox = ({conv}) => {
     },[user,socket])
     
     useEffect(()=>{
-      console.log('emited.......................dddddddddddddddddddddddddddddddddd')
         socket.emit('room:join', {email : user?.email,room : 1})
     },[user,socket])
     useEffect(()=>{
@@ -98,7 +97,7 @@ const ChatBox = ({conv}) => {
     if(conv != 'd'){
         
         return (
-            <div className="flex flex-col flex-auto h-fit p-6 pb-20 w-full">
+            <div className="flex flex-col flex-auto h-fit lg:p-6 pb-20 w-full">
                 <div className='p-1 w-full'> 
                 <div className="flex flex-row bg-gray-200 items-center w-full hover:bg-gray-100 rounded-xl p-2">
                 <div className="flex items-center justify-center h-8 w-8 bg-gray-200 rounded-full">
@@ -109,9 +108,9 @@ const ChatBox = ({conv}) => {
                   </div>
                  
                   </div>
-              <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl overflow-y-auto  bg-gray-100 p-4" style={{height : '440px'}}>
+              <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl overflow-y-auto h-[570px] lg:h-[440px] bg-gray-100 py-4 lg:p-4" >
                 <div className="flex flex-col h-full  mb-4">
-                  <div className="flex flex-col h-4/5">
+                  <div className="flex flex-col  lg:h-4/5">
                     
                     
                     {Object.keys(messages).map((dateKey) => (
@@ -120,7 +119,7 @@ const ChatBox = ({conv}) => {
                    <div >
                         
                         {messages[dateKey].map((message) => (
-                            <div className="grid grid-cols-12 gap-y-2 ml-20" ref={scrollRef}>
+                            <div className="grid grid-cols-12 gap-y-2 lg:ml-20" ref={scrollRef}>
                                 
                                 <Msg own={message.sender != user._id} msg={message}/>
                             </div>
@@ -149,10 +148,10 @@ const ChatBox = ({conv}) => {
           )
     }else{
         return (
-            <div className=' mx-36 text-center w-4/5 h-36 p-12 rounded-lg shadow-lg mt-28 border align-middle  text-lg  '>
+            <div className=' lg:mx-36 mx-8 text-center w-4/5 h-36 p-12 rounded-lg shadow-lg mt-28 border align-middle  text-lg  '>
                 <p>Select One Conversation..</p>
                 {incoming && <div className='rounded-lg shadow-lg border absolute top-1/3 left-1/2 -ml-16 p-6 bg-gradient-to-br from-black via-blue-900 to-black'>
-                    <p className='text-3xl p-3 text-white animate-bounce'> You  have a call from A...</p>
+                    <p className='text-3xl p-3 text-white animate-bounce'> You  have a call ....</p>
                     <div className='flex justify-evenly p-4' >
                     <Button className='mx-2 bg-blue-950 enabled:hover:bg-black' onClick={answer}>Answer</Button>
                     <Button className='mx-2 bg-blue-950  enabled:hover:bg-black' onClick={()=>{setIncoming(false)}}>Reject</Button>
