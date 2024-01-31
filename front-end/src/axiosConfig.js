@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const URL = 'http://localhost:3000';
+export const URL = 'https://foodwagon.online';
 const mainUrl = 'http://localhost:5173'
 
 const instance = axios.create({

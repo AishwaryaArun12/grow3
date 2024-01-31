@@ -1,5 +1,6 @@
 import { Server } from "socket.io";
 import http from 'http'
+import cors from 'cors';
 
 const configureSocket = (server : http.Server)=>{
     const io = new Server(server,{
