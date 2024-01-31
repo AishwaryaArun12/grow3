@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import loginBg from '../assets/loginBg.png'
 import axios from '../axiosConfig'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import GROW3 from '../assets/GROW3.gif'
+import GROW3 from '../assets/Grow3.gif'
 
 const SelectUser = () => {
     const [userType, setUserType] = useState('Investor')

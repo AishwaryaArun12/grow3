@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import loginBg from '../assets/loginBg.png';
 import axios,{URL} from '../axiosConfig';
 import { useNavigate } from 'react-router-dom';
-import GROW3 from '../assets/GROW3.gif'
+import GROW3 from '../assets/Grow3.gif'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
