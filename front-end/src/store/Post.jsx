@@ -11,7 +11,7 @@ export default function Post ({children}){
     async function getAllPosts(){
       
         axios.get(`/post/getallposts/${page}/${0}`).then(res=>{         
-          setPosts(res.data.posts);
+          setPosts(res?.data?.posts);
         }).catch(err=>{
           console.log(err);
           localStorage.removeItem('id')
