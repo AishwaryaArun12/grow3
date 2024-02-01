@@ -36,40 +36,54 @@ var userSchema = new mongoose_1.default.Schema({
     password: {
         type: String,
     },
-    profileImg: {
-        type: String,
-        default: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.vhv.rs%2Fviewpic%2FioJThwo_men-profile-icon-png-image-free-download-searchpng%2F&psig=AOvVaw2bMRvEatDUO7pLYHP_Jv_x&ust=1703080467350000&source=images&cd=vfe&ved=0CBIQjRxqFwoTCIj3-sHTm4MDFQAAAAAdAAAAABAE'
+    headline: {
+        type: String
+    },
+    country: {
+        type: String
+    },
+    region: {
+        type: String
     },
     coverPhoto: {
-        type: String,
-        default: 'https://cdn.shopify.com/s/files/1/0070/7032/files/cover_20photo.png?format=jpg&quality=90&v=1696566273&width=1024'
+        type: String
+    },
+    profileImg: {
+        type: String
     },
     otp: {
         type: String,
-    },
-    refreshToken: {
-        type: String,
-    },
-    accessToken: {
-        type: String
     },
     otpExpire: {
         type: Date
     },
     userType: {
         type: String,
-        required: true
     },
     verified: {
         type: Boolean,
         default: false
     },
     followers: [{
-            type: mongoose_1.Schema.Types.ObjectId
+            type: mongoose_1.Schema.Types.ObjectId,
+            ref: 'Users'
         }],
     viewers: [
         {
-            type: mongoose_1.Schema.Types.ObjectId
+            type: mongoose_1.Schema.Types.ObjectId,
+            ref: 'Users'
+        }
+    ],
+    requests: [
+        {
+            type: mongoose_1.Schema.Types.ObjectId,
+            ref: 'Users'
+        }
+    ],
+    pendings: [
+        {
+            type: mongoose_1.Schema.Types.ObjectId,
+            ref: 'Users'
         }
     ],
     primium: {
@@ -77,16 +91,24 @@ var userSchema = new mongoose_1.default.Schema({
             type: Date
         },
         subscriptionId: {
-            type: mongoose_1.Schema.Types.ObjectId
+            type: mongoose_1.Schema.Types.ObjectId,
+            ref: 'Subscription'
         }
     },
     description: {
         type: String
     },
     active: {
-        type: Boolean
+        type: Boolean,
+        default: true
+    },
+    age: {
+        type: Number
     },
     location: {
+        type: String
+    },
+    qualification: {
         type: String
     }
 });
