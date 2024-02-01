@@ -6,5 +6,6 @@ export default defineConfig({
   plugins: [react()],
   build: {
     sourcemap: true, // Add this line to enable sourcemaps
+    target: 'esnext',
   },
 })
