@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const URL = 'https://foodwagon.online';
+export const URL = 'https://grow3server.onrender.com';
 const mainUrl = 'https://grow3.onrender.com/'
 
 const instance = axios.create({
