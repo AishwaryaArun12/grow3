@@ -59,9 +59,9 @@ const App = () => {
       
         <Route exact path='/selectuser' element={<SelectUser />}/>
       
-        <Route exact path='/signup' element={<SignUp />}/>
+        <Route  path='/signup' element={<SignUp />}/>
    
-        <Route exact path='https://grow3.onrender.com/login' element={<Login />}/>
+        <Route  path='/login' element={<Login />}/>
      
         <Route exact path='/otp' element={<Otp />}/>
      
