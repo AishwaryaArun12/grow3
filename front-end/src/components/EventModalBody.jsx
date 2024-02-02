@@ -49,10 +49,10 @@ const EventModalBody = ({close,updatePost,ePost}) => {
           minutes = minutes.slice(0,3)
           return new Date(parseInt(year),parseInt(month)-1,parseInt(day),isPM ? parseInt(hours) + 12 : parseInt(hours),parseInt(minutes),0,0);
         };
-      console.log(startTime,endTime,Date.now(parseDate(startTime)),Date.now(parseDate(endTime)),'jjjjjjjjjjjjjjjjjjjjjjjjjj')
-        const startDate = Date.now(parseDate(startTime));
-        const endDate = Date.now(parseDate(endTime));
-        return endDate >= startDate;
+      
+      const startDate = parseDate(startTime).getTime();
+        const endDate = parseDate(endTime).getTime();
+        return endDate > startDate;
       }
         if(ePost){
             try {
@@ -84,7 +84,9 @@ const EventModalBody = ({close,updatePost,ePost}) => {
                     headers: {
                       'Content-Type': 'multipart/form-data',
                     }});
-                    updatePost()
+                    if(updatePost){
+                      updatePost();
+                    }
                     close();
                  }
                  
@@ -109,13 +111,16 @@ const EventModalBody = ({close,updatePost,ePost}) => {
                }else if(data.eventLink.trim() == "" || !textRegex.test(data.name.trim()) || data.name.trim() == "" || !textRegex.test(data.description.trim()) || data.description.trim() == ""){
                 toast('Invalid input')
                }else{
-              toast('success')
-                // const result =  await axios.post('/event/create',{...data,file:selectedFile,startTime:`${start._dateValue}, ${start._timeValue}`,endTime:`${end._dateValue}, ${end._timeValue}`,userId : localStorage.getItem('id'),speakers},{
-                //      headers: {
-                //        'Content-Type': 'multipart/form-data',
-                //      }});
-                //      updatePost(prev=>[...prev,result.data.result])
-                //      close();
+              
+                const result =  await axios.post('/event/create',{...data,file:selectedFile,startTime:`${start._dateValue}, ${start._timeValue}`,endTime:`${end._dateValue}, ${end._timeValue}`,userId : localStorage.getItem('id'),speakers},{
+                     headers: {
+                       'Content-Type': 'multipart/form-data',
+                     }});
+                     if(updatePost){
+                      updatePost(prev=>[...prev,result.data.result])
+                    }
+                     
+                     close();
                     }
              } catch (error) {
                  setError(error.message)
@@ -168,7 +173,8 @@ const EventModalBody = ({close,updatePost,ePost}) => {
       };
   return (
     <div>
-     {Date.now(user?.primium?.endingDate) < Date.now() ? <form onSubmit={handleSubmit(submit)}>
+     
+     {new Date(user?.primium?.endingDate).getTime() >= Date.now() ? <form onSubmit={handleSubmit(submit)}>
       <div className="space-y-12">
         <div className="border-b border-gray-900/10 pb-12">         
           {error && 

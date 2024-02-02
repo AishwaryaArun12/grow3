@@ -39,7 +39,7 @@ export default class eventRepository{
     async getAllEvents():Promise<IEvent[]>{
         try {
             
-            const result = await Event.find({'userId': { $in: await Users.find({ active: true }).distinct('_id') }}).populate('userId') 
+            const result = await Event.find({'userId': { $in: await Users.find({ active: true }).distinct('_id') }}).populate('userId').sort({startTime : -1})
               
             return result
         } catch (error) {

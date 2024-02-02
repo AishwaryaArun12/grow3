@@ -136,7 +136,9 @@ const Profile = () => {
 
   const remove =async (event)=>{
     try {
-      await axios.delete(`/event/delete/${event._id}/${event.media}`);
+      
+      const res = await axios.delete(`/event/delete/${event._id}/${event.media}`);
+      
       getEvents();
     } catch (error) {
       console.log(error)
@@ -159,6 +161,17 @@ const Profile = () => {
     console.log('error');
   }
 }
+
+const parseDate = (dateString) => {
+  if(dateString ){
+    const [day,month,YearTimePeriod] = dateString?.split('-');
+  const [year,timePeriod] = YearTimePeriod?.split(',');
+  let [hours, minutes] = timePeriod?.split(':');
+  const isPM = minutes?.includes('PM');
+  minutes = minutes?.slice(0,3)
+  return new Date(parseInt(year),parseInt(month)-1,parseInt(day),isPM ? parseInt(hours) + 12 : parseInt(hours),parseInt(minutes),0,0);
+  }
+};
    
   return (
     <div className='h-auto'>
@@ -283,7 +296,7 @@ const Profile = () => {
           <>
           <div className=' max-w-full mb-4 rounded-lg'>
           <div className='text-end'>
-        <button
+        {parseDate(event.startTime).getTime() > Date.now() && <button
           id="dropdownComment1Button"
           onClick={()=>{setDropdown(!dropdown)}}
           className="my-3 inline-flex items-center p-2 text-sm font-medium text-center text-gray-500 dark:text-gray-400 hover:bg-white rounded-lg bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
@@ -293,7 +306,7 @@ const Profile = () => {
             <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
           </svg>
           <span className="sr-only">Comment settings</span>
-        </button>
+        </button>}
         {/* Dropdown menu */}
         <div
           id="dropdownComment1"

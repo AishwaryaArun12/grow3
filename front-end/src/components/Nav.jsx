@@ -119,7 +119,7 @@ export default function Nav() {
                 </div>
                 <ToastContainer />
                 <div className="flex md:flex-1 left-10  items-center justify-center sm:items-stretch sm:justify-start">
-                  <div className="m-6 lg:m-0 flex  items-center">
+                  <div className="mr-72 lg:m-0 flex  items-center">
                     <img
                       className="h-fit w-16 sm:m-1  rounded-full "
                       src={GROW3}

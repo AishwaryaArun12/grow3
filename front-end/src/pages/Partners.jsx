@@ -15,6 +15,7 @@ import { IoMailOutline, IoStar } from 'react-icons/io5';
 import { FaMoneyCheck, FaBriefcase } from 'react-icons/fa';
 import coverImg from '../assets/cover.jpg'
 import { useSpring, animated } from 'react-spring';
+import ConnectButton from '../components/ConnectButton';
 
 const Partners = () => {
   const [index, setIndex] = useState(0);
@@ -24,12 +25,13 @@ const Partners = () => {
     const [userPosts,setUserPosts] = useState([]);
    
     const [allUsers,setAllUsers] = useState([]);
+    
     async function getAllUsers(){
       try {
         const res = await axios.get('/get_all_users')
-        setData(res.data.users.filter(i=>i?.userType != user?.userType));
-        const result =  await axios.get('/event/getallevents');
-        setEvents(result.data.events);
+        const arr = res.data.users.filter(i=>i?.userType != user?.userType && i?._id != localStorage.getItem('id'))
+        setData(arr);
+        
         setAllUsers(res.data.users);
       } catch (error) {
         console.log(error);
@@ -41,30 +43,15 @@ const Partners = () => {
       reset: true,
     });
 
-    const connection = async(foundInField,id)=>{
-       
-      try {
-        if(!foundInField){
-          await axios.patch('/edit_connection',{userId : id,requestId : user._id});
-         
-        }else if(foundInField == 'followers'){
-          await axios.patch('/edit_connection',{userId : id,unfollowId : user._id})
-        }else if(foundInField == 'requests'){
-          await axios.patch('/edit_connection',{userId : id,takeId : user._id})
-        }else if(foundInField == 'pendings'){
-          await axios.patch('/edit_connection',{userId : id,confirmId : user._id})
-          
-        }
-        getAllUsers();
-      } catch (error) {
-        console.log(error,'error')
-      }
-    }
+   
 
    
     useEffect(()=>{
+      axios.get('/event/getallevents').then(result =>{
+        setEvents(result.data.events);
+      }).catch(err=>console.log(err))
       getAllUsers();
-    },[user])
+    },[])
 
     const initialButton = [{name: 'Find Your Partners',current: true},
     {name : 'People who like to connect', current : false},
@@ -180,11 +167,11 @@ const fields = ["followers", "requests", "pendings"];
                  
 
                 </div>
-                <Button onClick={()=>{connection(foundInField,user._id)}} className='z-0 bg-gradient-to-br from-blue-900 via-black to-blue-900 m-1 hover:bg-black focus:ring-0'>{!foundInField ? 'Connect' : foundInField == 'followers' ? 'Connected' : foundInField == 'requests' ? 'Cancel Request' : 'Confirm Request'}</Button>
+                <ConnectButton foundInField={foundInField} id={user._id}/>
                 </div>
                 
               </div>
-              <div className='overflow-y-auto h-[280px] scrollNone bg-gradient-to-r from-gray-100 to-gray-300'>
+              <div className='overflow-y-auto h-64 lg:h-[280px] scrollNone bg-gradient-to-r from-gray-100 to-gray-300'>
               <div className="relative h-80  py-8 lg:py-5 ">
       <img
         src="https://images.unsplash.co/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&crop=focalpoint&fp-y=.8&w=2830&h=1500&q=80&blend=111827&sat=-100&exp=15&blend-mode=multiply"
@@ -209,14 +196,14 @@ const fields = ["followers", "requests", "pendings"];
           <div className='lg:flex '>
             <div className='flex mr-16 lg:mr-28  w-fit'>
               <HiAcademicCap size={20} className='mt-4' />
-              <h3 className='mt-3 ml-3'>{user.qualification}</h3>
+              <h3 className='m-3'>{user.qualification}</h3>
             </div>
             {user.userType == 'Investor' ? <div key='events' className="flex mt-2 mr-8">
                 
                 <dd className="text-2xl mx-3  font-bold leading-9 tracking-tight "><FaMoneyCheck size={32} /></dd>
-                <dt className="text-base leading-7 ">Investor</dt>
+                <dt className="text-base mt-2 leading-7 ">Investor</dt>
               </div> : <div key='events' className="flex flex-col-reverse">
-                <dt className="text-base leading-7 ">Enterpreneur</dt>
+                <dt className="text-base mt-2 leading-7 ">Enterpreneur</dt>
                 <dd className="text-2xl font-bold leading-9 tracking-tight "><FaBriefcase size={32} /></dd>
               </div>}
           </div>
@@ -250,7 +237,7 @@ const fields = ["followers", "requests", "pendings"];
         
       </div>
       <div className='m-4'>
-          <dl className="mt-8 grid grid-cols-1 lg:gap-8  gap-1 sm:mt-6 sm:grid-cols-2 lg:grid-cols-6">
+          <dl className="mt-8 grid grid-cols-2 lg:gap-8  gap-1 sm:mt-6 sm:grid-cols-2 lg:grid-cols-6">
             
             <div key='followers' className="flex flex-col-reverse">
               <dt className="lg:text-base text-sm leading-7 ">Connects</dt>
