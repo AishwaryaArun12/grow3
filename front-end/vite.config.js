@@ -8,6 +8,6 @@ export default defineConfig({
     sourcemap: true, // Add this line to enable sourcemaps
     target: 'esnext',
   },
-  base: '/',
+  base: '/front-end/',
   assetsDir: 'assets',
 })
