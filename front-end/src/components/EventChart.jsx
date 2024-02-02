@@ -1,7 +1,7 @@
 import React from 'react';
-import CanvasJSReact from '@canvasjs/react-charts';
+// import CanvasJSReact from '@canvasjs/react-charts';
 
-const CanvasJSChart = CanvasJSReact.CanvasJSChart;
+// const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 const EventChart = ({ data, text }) => {
   const options = {
@@ -35,7 +35,7 @@ const EventChart = ({ data, text }) => {
 
   return (
     <div>
-      <CanvasJSChart options={options} />
+      {/* <CanvasJSChart options={options} /> */}
       {/* You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods */}
     </div>
   );

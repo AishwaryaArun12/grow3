@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import CanvasJSReact from '@canvasjs/react-charts'; // Uncomment this line
+// import CanvasJSReact from '@canvasjs/react-charts'; // Uncomment this line
 import axios from '../axiosConfig';
 
-const CanvasJSChart = CanvasJSReact.CanvasJSChart; // Uncomment this line
+// const CanvasJSChart = CanvasJSReact.CanvasJSChart; // Uncomment this line
 
 const App = () => {
   const [posts, setPosts] = useState([]);
@@ -64,7 +64,7 @@ const App = () => {
 
   return (
     <div>
-      <CanvasJSChart options={options} />
+      {/* <CanvasJSChart options={options} /> */}
       {/* You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods */}
     </div>
   );
