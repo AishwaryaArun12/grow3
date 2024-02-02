@@ -142,13 +142,13 @@ const HomeAdmin = () => {
                 
                 <div class="lg:col-span-5 col-span-8 m-10 ms-4 w-full bg-white p-6 rounded-xl border border-gray-300 flex flex-col space-y-6">
                     
-                    <CustomerChart/>
+                    {/* <CustomerChart/> */}
                 </div>
                 <div class="lg:col-span-3 col-span-5 bg-white p-2 rounded-xl border border-gray-400 flex flex-col space-y-6">
-                    <EventChart text='Type of Users Overview' data={usersData}/>
+                    {/* <EventChart text='Type of Users Overview' data={usersData}/> */}
                 </div>
                 <div class="lg:col-span-2 col-span-5 bg-white p-2 rounded-xl border border-gray-400 flex flex-col space-y-6">
-                    <EventChart text='Premium Users Overview' data={premiumData}/>
+                    {/* <EventChart text='Premium Users Overview' data={premiumData}/> */}
                 </div>
             </div>
             
