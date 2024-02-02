@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const URL = 'https://grow3server.onrender.com';
-const mainUrl = 'https://grow3.onrender.com/'
+const mainUrl = 'https://grow3.vercel.app/'
 
 const instance = axios.create({
     baseURL: URL,
