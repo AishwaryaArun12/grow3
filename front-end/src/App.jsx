@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useCallback } from 'react'
-import {HashRouter as Router,Routes, Route, useNavigate} from 'react-router-dom'
+import {BrowserRouter as Router,Routes, Route, useNavigate} from 'react-router-dom'
 import SignUp from './pages/SignUp'
 import Login from './pages/Login'
 import Otp from './pages/Otp'
