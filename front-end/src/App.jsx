@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useCallback } from 'react'
-import {BrowserRouter as Router,Routes, Route, useNavigate} from 'react-router-dom'
+import {HashRouter as Router,Routes, Route, useNavigate} from 'react-router-dom'
 import SignUp from './pages/SignUp'
 import Login from './pages/Login'
 import Otp from './pages/Otp'
@@ -59,9 +59,9 @@ const App = () => {
       
         <Route exact path='/selectuser' element={<SelectUser />}/>
       
-        <Route  path='/signup' element={<SignUp />}/>
+        <Route exact path='/signup' element={<SignUp />}/>
    
-        <Route  path='/login' element={<Login />}/>
+        <Route exact  path='/login' element={<Login />}/>
      
         <Route exact path='/otp' element={<Otp />}/>
      
