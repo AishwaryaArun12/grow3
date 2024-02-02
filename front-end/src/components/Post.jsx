@@ -139,7 +139,7 @@ const Post = ({post}) => {
         <a href={localStorage.getItem('id') != 'ADMIN' ? `/user/${post?.userId?._id}`: `/admin/user/${post?.userId?._id}`}>
         <div className="flex items-center space-x-2">
           
-          <img src={post?.userId?.profileImg ? `${URL}/${post?.userId.profileImg.replace('uploads\\', '')}`: defaultProfile} alt="User Avatar" className="w-12 h-12 rounded-full" />
+          <img src={post?.userId?.profileImg ? `${URL}/${post?.userId.profileImg.replace('uploads/', '')}`: defaultProfile} alt="User Avatar" className="w-12 h-12 rounded-full" />
           <div>
             <p className="text-gray-800 font-semibold">{post?.userId?.name}</p>
             <p className="text-gray-500 text-sm">{formatDate(post?.time)}</p>
