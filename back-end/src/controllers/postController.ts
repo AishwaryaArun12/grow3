@@ -1,7 +1,5 @@
 import { Request,Response } from "express";
 import postService from "../domain/services/postService";
-import { IPost } from "../domain/entities/postEntity";
-import fs, { promises as fsPromises } from 'fs';
 
 export default class postController {
     private postService:postService
@@ -13,13 +11,11 @@ export default class postController {
        try {
         const id = req.headers['id'].toString();
         const {description,file} = req.body
-        console.log(description,file,'ggggggggggggggg');
         const result = await this.postService.create({userId:id,description,media:file,time: new Date()})
         res.status(200).json({message:'Post created successfully',result })
        } catch (error) {
-        
-       }
-        
+        console.log('error',error)
+       }       
     }
     async getAllPosts(req:Request,res:Response):Promise<void>{
         try {
@@ -42,16 +38,10 @@ export default class postController {
     }
     async editPost(req:Request,res:Response):Promise<void>{
         try {
-            const {description,id,ePostImg} = req.body
-            const file = req.file?.path ?? ePostImg
+            const {description,id,file} = req.body
+            
             const data = {description,media:file}
             await this.postService.editPost(id,data);
-            fsPromises.access(ePostImg, fs.constants.F_OK)
-            .then(() => {
-                fsPromises.unlink(ePostImg).then(res=>console.log('deleted path successfull..')).catch(err=>console.log(err,'error'))
-            }).catch(err=>{
-                console.log(err,'getting error when access')
-            })
             
             res.status(200).json({message:'Post edited successfully'})
         } catch (error) {
@@ -65,9 +55,6 @@ export default class postController {
         const img = req.params.img;
         const up = req.params.up;
         await this.postService.delete(id);
-        if(up != 'up'){
-           await fsPromises.unlink(up+'/'+img);
-        }
         res.status(200).json({message:'Post deleted successfully'})
         } catch (error) {
             res.status(500).json(error)

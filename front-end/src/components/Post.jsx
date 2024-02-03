@@ -5,7 +5,7 @@ import { FaHeart, FaPaperPlane, FaComment,FaCommentSlash} from 'react-icons/fa';
 import { URL } from '../axiosConfig';
 import defaultProfile from '../assets/defaultProfile.png'
 import axios from '../axiosConfig';
-import { postContext } from '../store/Post';
+import { firebaseContext,postContext } from '../store/Post';
 import { AuthContext } from '../store/Auth';
 import ReplyComment from './ReplyComment';
 import Comment from './Comment';
@@ -13,6 +13,7 @@ import Modal from './Modal'
 import Confirm from './Confirm';
 import PostModalbody from './PostModalbody';
 import ReportConfirm from './ReportConfirm';
+import { ref,deleteObject } from "firebase/storage";
 
 const Post = ({post}) => {
   const {user} = useContext(AuthContext)
@@ -22,6 +23,7 @@ const Post = ({post}) => {
   const [newcomment,setNewComment] = useState('')
   const id = localStorage.getItem('id');
   const [dropdown,setDropdown] = useState(false);
+  const {db,storage} = useContext(firebaseContext)
  
   const toggleColour = async(event) => {
     const icon = event.currentTarget;
@@ -110,6 +112,12 @@ const Post = ({post}) => {
     }
   }
   const remove = async()=>{
+    const desertRef = ref(storage, post.media);
+    deleteObject(desertRef).then(() => {
+      console.log('deleted successfully')
+    }).catch((error) => {
+      console.log('error',error)
+    });
     try {
       if(post.media){
         await axios.delete(`/post/delete/${post._id}/${post.media}`);

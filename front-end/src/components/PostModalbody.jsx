@@ -5,6 +5,8 @@ import { FaTelegramPlane } from 'react-icons/fa';
 import axios from '../axiosConfig';
 import { firebaseContext, postContext } from '../store/Post';
 import { URL } from '../axiosConfig';
+import { ref,uploadBytes,getDownloadURL,deleteObject } from "firebase/storage";
+
 
 const PostModalbody = ({close,ePost}) => {
     const postImgRef = useRef(null);
@@ -35,15 +37,8 @@ const PostModalbody = ({close,ePost}) => {
       getDownloadURL(ref(storage, pathImagesRef))
   .then(async(url) => {
     const file = url;
-          const res = await axios.post('/post/create',{file,description},{
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            }}
-          )
-          setDescription('');
-          setPostImg('');
-          getAllPosts();
-          close()
+          const res = await axios.post('/post/create',{file,description})
+         
   })
     });
           
@@ -53,26 +48,49 @@ const PostModalbody = ({close,ePost}) => {
       }else{
         setError('Add something which you want to share')
       }
+      setDescription('');
+      setPostImg('');
+      getAllPosts();
+      close()
     }
     const handleClick = async ()=>{
       if(!ePost){
         handleSubmit()
       }else{
         try {
+        
+          if(!oldImg){
+            const desertRef = ref(storage, ePost.media);
+          deleteObject(desertRef).then(() => {
+            console.log('deleted successfully')
+          }).catch((error) => {
+            console.log('error',error)
+          });
+            const imageRef = ref(storage, postImg.name);
+          const pathImagesRef = ref(storage, `images/${postImg.name}`);
           
-          const file = oldImg ?? postImg;
-           await axios.patch('/post/edit_post',{id: ePost._id,file,description,ePostImg},{
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            }}
-          )
-          setDescription('');
-          setPostImg('');
-          getAllPosts();
-          close()
+          uploadBytes(pathImagesRef, postImg).then((snapshot) => {
+            console.log('Uploaded a blob or file!',snapshot);
+            getDownloadURL(ref(storage, pathImagesRef))
+        .then(async(url) => {
+          const file = url;
+          const res= await axios.patch('/post/edit_post',{id: ePost._id,file,description})
+           console.log(res,'llllllllllll',url)    
+        })
+          });
+          
+          }else{
+            await axios.patch('/post/edit_post',{id: ePost._id,file:ePost.media,description})
+          }
+          
+          
         } catch (error) {
           setError(error.message)
         }
+        setDescription('');
+          setPostImg('');
+          getAllPosts();
+          close()
       }
     }
   return (
@@ -90,7 +108,7 @@ const PostModalbody = ({close,ePost}) => {
                       }   
                       {oldImg &&                       
                           <div>                            
-                           <img src={`${URL}/${oldImg.replace('uploads\\', '')}`} alt="" />
+                           <img src={`${oldImg}`} alt="" />
                           </div>                       
                       
                       }                    

@@ -31,7 +31,7 @@ const EventModalBody = ({close,updatePost,ePost}) => {
     const [names,setNames] = useState([]);
     const [suggetions,setSuggetions] = useState([])
     const [selectedSuggestion, setSelectedSuggestion] = useState(null);
-// console.log( ePost.media,'oooooooppppppppppp',typeof selectedFile)
+
     const handleFileChange = (event) => {
       const file = event.target.files[0];
 
