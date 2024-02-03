@@ -4,7 +4,7 @@ import { MdPhotoLibrary } from 'react-icons/md'
 import { FaTelegramPlane } from 'react-icons/fa';
 import axios from '../axiosConfig';
 import { firebaseContext, postContext } from '../store/Post';
-import { URL } from '../axiosConfig';
+
 import { ref,uploadBytes,getDownloadURL,deleteObject } from "firebase/storage";
 
 

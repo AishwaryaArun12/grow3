@@ -10,12 +10,13 @@ import Modal from '../components/Modal';
 import PostModalbody from '../components/PostModalbody'
 import Premium from '../components/Premium'
 import { Button } from 'flowbite-react';
-import { postContext } from '../store/Post';
+import {firebaseContext, postContext } from '../store/Post';
 import Post from '../components/Post';
 import { Link,  Element, animateScroll as scroll,  } from 'react-scroll';
 import FriendNotification from '../components/FriendNotification';
 import EventModalBody from '../components/EventModalBody';
 import Confirm from '../components/Confirm';
+import { ref,uploadBytes,getDownloadURL,deleteObject } from "firebase/storage";
 
 
 const Profile = () => {
@@ -26,6 +27,7 @@ const Profile = () => {
     const [events,setEvents] = useState([]);
     const [dropdown,setDropdown] = useState(false);
     const [ registered,setRegistered] = useState([]);
+    const {db,storage} = useContext(firebaseContext)
 
     useEffect(() => {
       // Check the window width and set the targetDiv accordingly
@@ -88,13 +90,21 @@ const Profile = () => {
     },[])
      
       async function uploadCover(file){
-        const formData = new FormData();
-          formData.append('profileImage', file);
+
+        const imageRef = ref(storage, file.name);
+        const pathImagesRef = ref(storage, `images/${file.name}`);
+        
+        uploadBytes(pathImagesRef, file).then((snapshot) => {
+          console.log('Uploaded a blob or file!',snapshot);
+          getDownloadURL(ref(storage, pathImagesRef))
+      .then(async(url) => {
+        const file = url;
+        await axios.post('/uploadcover',file)
+          userData();
+      })
+        });
            try {
-            await axios.post('/uploadcover',formData, {
-              headers: {
-                'Content-Type': 'multipart/form-data',
-              }});
+           
               userData();
            } catch (error) {
               console.log(error);
@@ -102,28 +112,28 @@ const Profile = () => {
         }
     
       async function uploadImg(file){
-        const formData = new FormData();
-        formData.append('profileImage', file);
+        const imageRef = ref(storage, file.name);
+        const pathImagesRef = ref(storage, `images/${file.name}`);
+        
+        uploadBytes(pathImagesRef, file).then((snapshot) => {
+          console.log('Uploaded a blob or file!',snapshot);
+          getDownloadURL(ref(storage, pathImagesRef))
+      .then(async(url) => {
+        const file = url;
+        await axios.post('/uploadimg',file);
+          userData();
+      })
+        });
 
-          try {
-            await axios.post('/uploadimg',formData, {
-              headers: {
-                'Content-Type': 'multipart/form-data',
-              }});
-  
-              userData();
-          } catch (error) {
-            console.log(error)
-          }
        }
 
     const profileIcon = (<div className='w-14 h-12  overflow-hidden rounded-full border-2 border-gray-300 shadow-md'>
-    <img className='w-full h-full object-cover bg-transparent' src={ user.profileImg ? `${URL}/${user.profileImg.replace('uploads\\', '')}` : defaultProfile} alt="" />
+    <img className='w-full h-full object-cover bg-transparent' src={ user.profileImg ? `${user.profileImg}` : defaultProfile} alt="" />
   </div>)
   
     const buttonContent = (<div className='flex mt-5 '>
     <div className='w-14 h-12  overflow-hidden rounded-full border-2 border-gray-300 shadow-md'>
-      <img className='w-full h-full object-cover bg-transparent' src={ user.profileImg ? `${URL}/${user.profileImg.replace('uploads\\', '')}` : defaultProfile} alt="" />
+      <img className='w-full h-full object-cover bg-transparent' src={ user.profileImg ? `${user.profileImg}` : defaultProfile} alt="" />
     </div>
     <div className='h-12 rounded-full w-full ml-1 p-2 shadow-md border-gray-300 border-2 hover:bg-gray-200'>
       <p>Start a post...</p>
@@ -224,7 +234,7 @@ const parseDate = (dateString) => {
                   {/* Cover Photo */}
                   <div className='relative h-56 w-full bg-blue-500'>
                   <label htmlFor="cover">
-                  <img  src={ user.coverPhoto ? `${URL}/${user.coverPhoto.replace('uploads\\', '')}` : coverImg} 
+                  <img  src={ user.coverPhoto ? `${user.coverPhoto}` : coverImg} 
                   alt="" 
                   
                   className='h-full w-full' 
@@ -248,7 +258,7 @@ const parseDate = (dateString) => {
                     {/* Profile Photo Image */}
                     <label htmlFor="img">
                     <img
-                      src={ user.profileImg ? `${URL}/${user.profileImg.replace('uploads\\', '')}` : defaultProfile} 
+                      src={ user.profileImg ? `${user.profileImg}` : defaultProfile} 
                       alt='Profile'
                       className='w-full h-full object-cover bg-transparent'
                       
@@ -331,7 +341,7 @@ const parseDate = (dateString) => {
                     <div className="w-full p-2 rounded-lg shadow-xl bg-gray-300">
                     <img
                         className="object-cover w-full  lg:h-96"
-                        src={`${URL}/${event?.media?.replace('uploads\\', '')}`}
+                        src={`${event?.media}`}
                         alt="image"
                     />
                     <div className="pl-2">
@@ -381,7 +391,7 @@ const parseDate = (dateString) => {
                     <div className="w-full p-2 rounded-lg shadow-xl bg-gray-300">
                     <img
                         className="object-cover w-full  lg:h-96"
-                        src={`${URL}/${event?.media?.replace('uploads\\', '')}`}
+                        src={`${event?.media}`}
                         alt="image"
                     />
                     <div className="pl-2">

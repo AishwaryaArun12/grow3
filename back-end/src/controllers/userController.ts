@@ -2,7 +2,6 @@ import { Request, Response, response } from "express";
 import { userService } from "domain/services/userService";
 import Jwt from 'jsonwebtoken';
 const jwtSecret = process.env.JWT_SECRET;
-import { promises as fsPromises } from 'fs';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -212,19 +211,11 @@ export class userController {
         try {
             const id = req.headers['id'].toString();
 
-            const coverPhoto = req.file?.path;
+            const coverPhoto = req.body.file;
             const user = await this.UserService.getUser(id);
-            const existingCover =  user.coverPhoto;
             
-            if (!req.file) {
-                res.status(404).json({ message: 'no file selected' })
-                return;
-            }
             await this.UserService.editUser(id, { coverPhoto })
-            if (existingCover?.startsWith('uploads')) {
-                // Delete the existing cover photo from the 'uploads' directory
-                await fsPromises.unlink(existingCover);
-            }
+            
             res.json({ success: true, message: 'Image uploaded successfully.' });
         } catch (error) {
             console.error(error);
@@ -235,18 +226,11 @@ export class userController {
         try {
             const id = req.headers['id'].toString();
 
-            const profileImg = req.file?.path;
+            const profileImg = req.body.file;
             const user = await this.UserService.getUser(id);
-            const existingImg = user.profileImg;
-
-            if (!req.file) {
-                res.status(404).json({ message: 'no file selected' })
-                return;
-            }
+            
             await this.UserService.editUser(id, { profileImg })
-            if (existingImg.startsWith('uploads')) {
-                await fsPromises.unlink(existingImg);
-            }
+            
             res.json({ success: true, message: 'Image uploaded successfully.' });
         } catch (error) {
             console.error(error);

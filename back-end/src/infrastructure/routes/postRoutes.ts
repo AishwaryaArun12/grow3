@@ -5,7 +5,6 @@ import postUseCase from "../../application/postUseCase";
 import postService from "../../domain/services/postService";
 import postController from "../../controllers/postController";
 import commentUseCase from "../../application/commentUseCase";
-import multer from "multer";
 
 const PostRepository = new postRepository();
 const CommentRepository = new commentRepository;
@@ -14,8 +13,6 @@ const CommentUseCase = new commentUseCase(CommentRepository)
 const PostService = new postService(PostUseCase,CommentUseCase);
 const PostController = new postController(PostService);
 
-
- 
 const postRouter = Router();
 
 postRouter.post('/create',  (req,res)=> PostController.create(req,res));
