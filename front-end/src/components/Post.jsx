@@ -192,7 +192,7 @@ const Post = ({post}) => {
       </p>
 
       {/* Image */}
-      {post?.media && <img src={`${URL}/${post?.media.replace('uploads\\', '')}`} alt="Post Image" className="mb-4 w-full h-96 object-cover rounded-md" />}
+      {post?.media && <img src={`${post?.media}`} alt="Post Image" className="mb-4 w-full h-96 object-cover rounded-md" />}
 
       {/* Like and Comment Section */}
       <div className="flex items-center justify-between text-gray-500">
