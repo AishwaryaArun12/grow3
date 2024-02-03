@@ -3,7 +3,7 @@ import  { useContext, useEffect, useRef ,useState} from 'react'
 import { MdPhotoLibrary } from 'react-icons/md'
 import { FaTelegramPlane } from 'react-icons/fa';
 import axios from '../axiosConfig';
-import { postContext } from '../store/Post';
+import { firebaseContext, postContext } from '../store/Post';
 import { URL } from '../axiosConfig';
 
 const PostModalbody = ({close,ePost}) => {
@@ -12,7 +12,8 @@ const PostModalbody = ({close,ePost}) => {
     const [error,setError] = useState();
     const [description,setDescription] = useState();
     const {setPosts,getAllPosts} = useContext(postContext)
-    const [oldImg,setOldImg] = useState()
+    const [oldImg,setOldImg] = useState();
+    const {db,storage} = useContext(firebaseContext)
     let ePostImg;
     if(ePost){
       ePostImg = ePost.media;
@@ -26,7 +27,14 @@ const PostModalbody = ({close,ePost}) => {
     const handleSubmit = async()=>{
       if(postImg || description && description?.trim() != ''){
         try {
-          const file = postImg;
+          const imageRef = ref(storage, postImg.name);
+    const pathImagesRef = ref(storage, `images/${postImg.name}`);
+    
+    uploadBytes(pathImagesRef, postImg).then((snapshot) => {
+      console.log('Uploaded a blob or file!',snapshot);
+      getDownloadURL(ref(storage, pathImagesRef))
+  .then(async(url) => {
+    const file = url;
           const res = await axios.post('/post/create',{file,description},{
             headers: {
               'Content-Type': 'multipart/form-data',
@@ -36,6 +44,9 @@ const PostModalbody = ({close,ePost}) => {
           setPostImg('');
           getAllPosts();
           close()
+  })
+    });
+          
         } catch (error) {
           setError(error.message)
         }

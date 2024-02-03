@@ -3,6 +3,7 @@ import axios from "../axiosConfig";
 import React from "react";
 
 export const postContext = createContext(null);
+export const firebaseContext = createContext(null);
 
 export default function Post ({children}){
   
