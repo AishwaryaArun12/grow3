@@ -19,7 +19,7 @@ declare module 'express-session' {
 const createServer = ()=>{
     const app = express();
     app.use(cors({
-        origin: '*',
+        origin: 'https://grow3.vercel.app',
         methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH'],
       }));
       app.use(bodyParser.json());
