@@ -16,7 +16,7 @@ const PostController = new postController(PostService);
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'uploads/');
+      cb(null, '/opt/render/project/src/back-end/src/config/uploads/');
     },
     filename: function (req, file, cb) {
       cb(null, Date.now() + '-' + file.originalname);
