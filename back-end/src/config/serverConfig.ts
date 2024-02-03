@@ -37,8 +37,7 @@ const createServer = ()=>{
           mongoUrl: process.env.URL,
          })
       }));
-      app.use(express.static(path.join(__dirname, 'config', 'uploads')));
-      console.log('Static files served from:', path.join(__dirname, 'uploads'));
+      app.use(express.static('uploads'));
       app.use(morgan("dev"))
     return app;  
 
