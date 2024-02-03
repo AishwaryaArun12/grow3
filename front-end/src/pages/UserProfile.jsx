@@ -300,7 +300,7 @@ const UserProfile = () => {
              return <Mutual  i = {i}/>}) : <p className=' text-center m-5'>No Mutual Connections ..</p>}
              
             </div>}
-            {buttons[3].current && events.length != 0 ? events.map((event) => (
+            {buttons[3].current && <div> {events.length != 0 ? events.map((event) => (
           <>
           <div className=' max-w-full mb-4 rounded-lg'>
           <div className='text-end'>
@@ -349,7 +349,9 @@ const UserProfile = () => {
                     </div>
           <hr className='bg-black'/>
           </>
-        )) : <h2 className='text-xl font-bold ml-12'>No Events Yet</h2>}
+        )) : <h2 className='text-xl font-bold ml-12'>No Events Yet</h2> }
+        </div>}
+        
             </div>
 
         </div>

@@ -59,7 +59,7 @@ const Connects = ({i}) => {
             <p className="text-gray-500 text-sm">{mutual} Mutual Friends</p>
           </a>
           <div className='ml-3 '>
-          {user._id == i._id ? <Button>&#x1F60A; Me</Button> :
+          {user._id == i._id ? <Button className='bg-gradient-to-br from-blue-900 via-black to-blue-900' >&#x1F60A; Me</Button> :
           <Button onClick={()=>{connection(localStorage.getItem('id'))}} className='w-full z-0 bg-gradient-to-br from-blue-900 via-black to-blue-900 m-1 hover:bg-black focus:ring-0'>{!foundInFields ? 'Connect' : foundInFields == 'followers' ? 'Connected' : foundInFields == 'requests' ? 'Confirm Request' : 'Cancel Request'}</Button>}
           </div>
         </div>
