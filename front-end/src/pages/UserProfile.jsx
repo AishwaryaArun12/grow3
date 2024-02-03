@@ -289,14 +289,14 @@ const UserProfile = () => {
              })}
               </div>
              {buttons[0].current && <div>
-              {userPosts.length != 0 ?  userPosts.map((i,index)=>(<Post post={i} key={index}/>)) : <p className=' text-center m-5'>No Posts Yet..</p>}
+              {userPosts?.length != 0 ?  userPosts.map((i,index)=>(<Post post={i} key={index}/>)) : <p className=' text-center m-5'>No Posts Yet..</p>}
               </div>}
              {buttons[1].current && <div>
-            {user.followers.length !=0 ? user.followers?.map(i=>{  
+            {user?.followers?.length !=0 ? user?.followers?.map(i=>{  
                 return <Connects i={i}/>}) : <p className=' text-center m-5'>No Connections Yet..</p>}
             </div>}
             {buttons[2].current && <div>
-            {user.followers.length !=0 ? user.followers?.map(i=>{  
+            {user?.followers?.length !=0 ? user.followers?.map(i=>{  
              return <Mutual  i = {i}/>}) : <p className=' text-center m-5'>No Mutual Connections ..</p>}
              
             </div>}

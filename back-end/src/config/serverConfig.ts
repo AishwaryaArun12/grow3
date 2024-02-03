@@ -38,6 +38,7 @@ const createServer = ()=>{
          })
       }));
       app.use(express.static('uploads'));
+      console.log('Static files served from:', path.join(__dirname, 'uploads'));
       app.use(morgan("dev"))
     return app;  
 
