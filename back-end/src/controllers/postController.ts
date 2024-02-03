@@ -13,7 +13,7 @@ export default class postController {
        try {
         const id = req.headers['id'].toString();
         const {description,file} = req.body
-        
+        console.log(description,file,'ggggggggggggggg');
         const result = await this.postService.create({userId:id,description,media:file,time: new Date()})
         res.status(200).json({message:'Post created successfully',result })
        } catch (error) {

@@ -20,6 +20,7 @@
     "date-fns": "^3.0.6",
     "emoji-mart": "^5.5.2",
     "emoji-picker-react": "^4.6.11",
+    "firebase": "^10.8.0",
     "flowbite-react": "^0.7.2",
     "razorpay": "^2.9.2",
     "razorpay-checkout": "^1.0.4",
