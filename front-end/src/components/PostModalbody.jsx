@@ -38,7 +38,7 @@ const PostModalbody = ({close,ePost}) => {
   .then(async(url) => {
     const file = url;
           const res = await axios.post('/post/create',{file,description})
-         
+          getAllPosts();
   })
     });
           
@@ -50,7 +50,7 @@ const PostModalbody = ({close,ePost}) => {
       }
       setDescription('');
       setPostImg('');
-      getAllPosts();
+      
       close()
     }
     const handleClick = async ()=>{
@@ -75,12 +75,13 @@ const PostModalbody = ({close,ePost}) => {
         .then(async(url) => {
           const file = url;
           const res= await axios.patch('/post/edit_post',{id: ePost._id,file,description})
-           console.log(res,'llllllllllll',url)    
+          getAllPosts();
         })
           });
           
           }else{
             await axios.patch('/post/edit_post',{id: ePost._id,file:ePost.media,description})
+            getAllPosts();
           }
           
           
@@ -89,7 +90,6 @@ const PostModalbody = ({close,ePost}) => {
         }
         setDescription('');
           setPostImg('');
-          getAllPosts();
           close()
       }
     }

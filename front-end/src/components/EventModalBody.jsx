@@ -6,6 +6,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AuthContext } from '../store/Auth';
 import { Button } from 'flowbite-react';
+import { firebaseContext } from '../store/Post';
+import { ref,uploadBytes,getDownloadURL,deleteObject } from "firebase/storage";
  
   
 
@@ -22,6 +24,7 @@ const EventModalBody = ({close,updatePost,ePost}) => {
             endTime : ePost?.endTime
         }
     });
+    const {db,storage} = useContext(firebaseContext)
     const [start,setStart]= useState();
     const [end,setEnd] = useState();
     const initialSpeakers = ePost?.speakers ?? []
@@ -80,14 +83,36 @@ const EventModalBody = ({close,updatePost,ePost}) => {
                  }else if(data.eventLink.trim() == "" || !textRegex.test(data.name.trim()) || data.name.trim() == "" || !textRegex.test(data.description.trim()) || data.description.trim() == ""){
                   toast('Invalid input')
                  }else{
-                  const result =  await axios.patch('/event/edit_event',{...data,id:ePost._id,eEventImg:ePost?.media,file:selectedFile,startTime,endTime,userId : localStorage.getItem('id'),speakers},{
-                    headers: {
-                      'Content-Type': 'multipart/form-data',
-                    }});
+                  if(selectedFile){
+                    const desertRef = ref(storage, ePost?.media);
+                    deleteObject(desertRef).then(() => {
+                      console.log('deleted successfully')
+                    }).catch((error) => {
+                      console.log('error',error)
+                    });
+                    const imageRef = ref(storage, selectedFile.name);
+                    const pathImagesRef = ref(storage, `images/${selectedFile.name}`);
+                    
+                    uploadBytes(pathImagesRef, selectedFile).then((snapshot) => {
+                      console.log('Uploaded a blob or file!',snapshot);
+                      getDownloadURL(ref(storage, pathImagesRef))
+                  .then(async(url) => {
+                    const file = url;
+                     const result =  await axios.patch('/event/edit_event',{...data,id:ePost._id,file,startTime,endTime,userId : localStorage.getItem('id'),speakers});
                     if(updatePost){
                       updatePost();
                     }
-                    close();
+                    close();    
+                  })
+                    });
+                  }else{
+                    const result =  await axios.patch('/event/edit_event',{...data,id:ePost._id,media:ePost?.media,startTime,endTime,userId : localStorage.getItem('id'),speakers});
+                    if(updatePost){
+                      updatePost();
+                    }
+                    close(); 
+                  }
+                  
                  }
                  
                 
@@ -111,16 +136,24 @@ const EventModalBody = ({close,updatePost,ePost}) => {
                }else if(data.eventLink.trim() == "" || !textRegex.test(data.name.trim()) || data.name.trim() == "" || !textRegex.test(data.description.trim()) || data.description.trim() == ""){
                 toast('Invalid input')
                }else{
+                const imageRef = ref(storage, selectedFile.name);
+                const pathImagesRef = ref(storage, `images/${selectedFile.name}`);
+                
+                uploadBytes(pathImagesRef, selectedFile).then((snapshot) => {
+                  console.log('Uploaded a blob or file!',snapshot);
+                  getDownloadURL(ref(storage, pathImagesRef))
+              .then(async(url) => {
+                const file = url;
+                      const result =  await axios.post('/event/create',{...data,media:file,startTime:`${start._dateValue}, ${start._timeValue}`,endTime:`${end._dateValue}, ${end._timeValue}`,userId : localStorage.getItem('id'),speakers});
+                      if(updatePost){
+                        updatePost(prev=>[...prev,result.data.result])
+                      }
+                       
+                       close();
               
-                const result =  await axios.post('/event/create',{...data,file:selectedFile,startTime:`${start._dateValue}, ${start._timeValue}`,endTime:`${end._dateValue}, ${end._timeValue}`,userId : localStorage.getItem('id'),speakers},{
-                     headers: {
-                       'Content-Type': 'multipart/form-data',
-                     }});
-                     if(updatePost){
-                      updatePost(prev=>[...prev,result.data.result])
-                    }
-                     
-                     close();
+                    })
+                });
+              
                     }
              } catch (error) {
                  setError(error.message)
