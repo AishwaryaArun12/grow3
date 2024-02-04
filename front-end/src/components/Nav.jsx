@@ -178,7 +178,7 @@ export default function Nav() {
                         <a href="/profile" className="relative flex rounded-full bg-blue-900 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-900">
                         <img
                           className="h-9 w-9 rounded-full"
-                          src={`${user?.profileImg ? `${user.profileImg}` : defaultProfile} `}
+                          src={`${user?.profileImg ? `${user?.profileImg}` : defaultProfile} `}
                           alt=""
                         />
                         </a>

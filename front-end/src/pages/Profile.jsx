@@ -17,10 +17,11 @@ import FriendNotification from '../components/FriendNotification';
 import EventModalBody from '../components/EventModalBody';
 import Confirm from '../components/Confirm';
 import { ref,uploadBytes,getDownloadURL,deleteObject } from "firebase/storage";
+import { AuthContext } from '../store/Auth';
 
 
 const Profile = () => {
-    const [user,setUser] = useState({});
+    const {user,setUser} = useContext(AuthContext);
     const {posts} = useContext(postContext)
     const [userPosts,setUserPosts] = useState([]);
     const [targetDiv, setTargetDiv] = useState('mydiv');
@@ -65,7 +66,7 @@ const Profile = () => {
     useEffect(()=>{
       axios.get('/post/getallposts/0/0').then(res=>{
         
-        setUserPosts(()=> res.data.posts.filter(i=>i.userId._id == user._id))
+        setUserPosts(()=> res.data.posts.filter(i=>i.userId._id == user?._id))
       })
       
     },[posts])
@@ -84,7 +85,6 @@ const Profile = () => {
       setUser(user.data.user)     
     }
     useEffect(()=>{
-        userData();
         getEvents();
         getRegistered();
     },[])
@@ -99,7 +99,7 @@ const Profile = () => {
           getDownloadURL(ref(storage, pathImagesRef))
       .then(async(url) => {
         const file = url;
-       const res = await axios.post('/uploadcover',file)
+       const res = await axios.post('/uploadcover',{file})
           userData();
           console.log(res)
       })
@@ -108,7 +108,6 @@ const Profile = () => {
         }
     
       async function uploadImg(file){
-        console.log(file.name,'ddddddddddd')
         const imageRef = ref(storage, file.name);
         const pathImagesRef = ref(storage, `images/${file.name}`);
         
@@ -117,7 +116,7 @@ const Profile = () => {
           getDownloadURL(ref(storage, pathImagesRef))
       .then(async(url) => {
         const file = url;
-        const res = await axios.post('/uploadimg',file);
+        const res = await axios.post('/uploadimg',{file});
         console.log(res,url);
           userData();
       })
@@ -126,12 +125,12 @@ const Profile = () => {
        }
 
     const profileIcon = (<div className='w-14 h-12  overflow-hidden rounded-full border-2 border-gray-300 shadow-md'>
-    <img className='w-full h-full object-cover bg-transparent' src={ user.profileImg ? `${user.profileImg}` : defaultProfile} alt="" />
+    <img className='w-full h-full object-cover bg-transparent' src={ user?.profileImg ? `${user?.profileImg}` : defaultProfile} alt="" />
   </div>)
   
     const buttonContent = (<div className='flex mt-5 '>
     <div className='w-14 h-12  overflow-hidden rounded-full border-2 border-gray-300 shadow-md'>
-      <img className='w-full h-full object-cover bg-transparent' src={ user.profileImg ? `${user.profileImg}` : defaultProfile} alt="" />
+      <img className='w-full h-full object-cover bg-transparent' src={ user?.profileImg ? `${user?.profileImg}` : defaultProfile} alt="" />
     </div>
     <div className='h-12 rounded-full w-full ml-1 p-2 shadow-md border-gray-300 border-2 hover:bg-gray-200'>
       <p>Start a post...</p>
@@ -232,7 +231,7 @@ const parseDate = (dateString) => {
                   {/* Cover Photo */}
                   <div className='relative h-56 w-full bg-blue-500'>
                   <label htmlFor="cover">
-                  <img  src={ user.coverPhoto ? `${user.coverPhoto}` : coverImg} 
+                  <img  src={ user?.coverPhoto ? `${user?.coverPhoto}` : coverImg} 
                   alt="" 
                   
                   className='h-full w-full' 
@@ -256,7 +255,7 @@ const parseDate = (dateString) => {
                     {/* Profile Photo Image */}
                     <label htmlFor="img">
                     <img
-                      src={ user.profileImg ? `${user.profileImg}` : defaultProfile} 
+                      src={ user?.profileImg ? `${user?.profileImg}` : defaultProfile} 
                       alt='Profile'
                       className='w-full h-full object-cover bg-transparent'
                       

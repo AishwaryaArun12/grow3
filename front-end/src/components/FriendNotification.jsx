@@ -21,7 +21,7 @@ const FriendNotification = ({user,userData}) => {
         </div>
       <div>
         {main[0].active && <div>
-            {user.pendings?.length !=0 ? user.pendings?.map(i=>{
+            {user?.pendings?.length !=0 ? user?.pendings?.map(i=>{
                const mutual = authUser?.followers.reduce((count, follower) => {
                 
                 if (i.followers.some((followerId) => followerId._id === follower._id)) {
@@ -53,7 +53,7 @@ const FriendNotification = ({user,userData}) => {
             )}) : <p className=' text-center m-5'>No Pending Requests..</p>}
             </div>}
             {main[1].active && <div>
-            {user.followers.length !=0 ? user.followers?.map(i=>{
+            {user?.followers.length !=0 ? user?.followers?.map(i=>{
                  const mutual = authUser.followers.reduce((count, follower) => {
                 
                     if (i.followers.some((followerId) => followerId._id === follower._id)) {
@@ -86,7 +86,7 @@ const FriendNotification = ({user,userData}) => {
             )}) : <p className=' text-center m-5'>No Connections Yet..</p>}
             </div>}
             {main[2].active && <div>
-            {user.requests.length !=0 ? user.requests?.map(i=>{
+            {user?.requests.length !=0 ? user?.requests?.map(i=>{
                  const mutual = authUser.followers.reduce((count, follower) => {
                 
                     if (i.followers.some((followerId) => followerId._id === follower._id)) {
