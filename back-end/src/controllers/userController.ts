@@ -212,7 +212,7 @@ export class userController {
             const id = req.headers['id'].toString();
 
             const coverPhoto = req.body.file;
-           
+           console.log(coverPhoto,id)
             const result=await this.UserService.editUser(id, { coverPhoto })
             
             res.json({ success: true, message: 'Image uploaded successfully.' ,result});
@@ -226,8 +226,7 @@ export class userController {
             const id = req.headers['id'].toString();
 
             const profileImg = req.body.file;
-            const user = await this.UserService.getUser(id);
-            
+           
             await this.UserService.editUser(id, { profileImg })
             
             res.json({ success: true, message: 'Image uploaded successfully.' });

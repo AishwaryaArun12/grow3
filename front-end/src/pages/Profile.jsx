@@ -99,19 +99,16 @@ const Profile = () => {
           getDownloadURL(ref(storage, pathImagesRef))
       .then(async(url) => {
         const file = url;
-        await axios.post('/uploadcover',file)
+       const res = await axios.post('/uploadcover',file)
           userData();
+          console.log(res)
       })
         });
-           try {
-           
-              userData();
-           } catch (error) {
-              console.log(error);
-           }
+          
         }
     
       async function uploadImg(file){
+        console.log(file.name,'ddddddddddd')
         const imageRef = ref(storage, file.name);
         const pathImagesRef = ref(storage, `images/${file.name}`);
         
@@ -121,7 +118,7 @@ const Profile = () => {
       .then(async(url) => {
         const file = url;
         const res = await axios.post('/uploadimg',file);
-        console.log(res);
+        console.log(res,url);
           userData();
       })
         });
