@@ -65,18 +65,18 @@ export default function SignUp() {
   }
 
   return (
-    <div className='flex'>
+    <div className='flex items-center'>
       
-      <div className="lg:flex  h-fit min-h-screen  border sm:w-full border-gray-200  flex-1 flex-col justify-center md:px-8 md:py-12 lg:px-0 lg:py-0">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm flex">
+      <div className="lg:flex h-fit min-h-screen  border sm:w-full border-gray-200  flex-1 flex-col justify-center md:px-8 md:py-12 lg:px-0 lg:py-0">
+        <div className="sm:mx-auto sm:w-full sm:max-w-sm flex items-center justify-center">
        
         <img
-                      className="h-fit w-16 sm:m-1  rounded-full "
+                      className="h-fit w-16 mr-6  rounded-full "
                       src={GROW3}
                       alt="Your Company"
                     />
               
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+          <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Sign up your account
           </h2>
         </div>
@@ -207,7 +207,7 @@ export default function SignUp() {
             <div>
               <button
                 type="submit"
-                className="flex w-full justify-center rounded-md bg-blue-700 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="flex w-full justify-center rounded-md bg-blue-950 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Sign up
               </button>
