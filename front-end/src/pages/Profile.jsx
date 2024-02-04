@@ -120,7 +120,8 @@ const Profile = () => {
           getDownloadURL(ref(storage, pathImagesRef))
       .then(async(url) => {
         const file = url;
-        await axios.post('/uploadimg',file);
+        const res = await axios.post('/uploadimg',file);
+        console.log(res);
           userData();
       })
         });

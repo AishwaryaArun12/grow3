@@ -212,11 +212,10 @@ export class userController {
             const id = req.headers['id'].toString();
 
             const coverPhoto = req.body.file;
-            const user = await this.UserService.getUser(id);
+           
+            const result=await this.UserService.editUser(id, { coverPhoto })
             
-            await this.UserService.editUser(id, { coverPhoto })
-            
-            res.json({ success: true, message: 'Image uploaded successfully.' });
+            res.json({ success: true, message: 'Image uploaded successfully.' ,result});
         } catch (error) {
             console.error(error);
             res.status(500).json({ success: false, message: 'Internal Server Error' });

@@ -7,7 +7,6 @@ import GROW3 from '../assets/Grow3.gif'
 import axios from '../axiosConfig'
 import { AuthContext } from '../store/Auth'
 import defaultProfile from '../assets/defaultProfile.png'
-import { URL } from '../axiosConfig'
 import { postContext } from '../store/Post'
 
  
