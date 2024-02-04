@@ -124,7 +124,7 @@ const Chat = () => {
             return (
                 <button onClick={()=>{setConv(conv)}} className="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2">
             <div className="flex items-center justify-center h-8 w-8 bg-gray-200 rounded-full">
-            <img src={member[0]?.profileImg ? `${URL}/${member[0].profileImg.replace('uploads\\', '')}`: defaultProfile} alt="User Avatar" className="w-8 h-8 rounded-full" />
+            <img src={member[0]?.profileImg ? `${member[0].profileImg}`: defaultProfile} alt="User Avatar" className="w-8 h-8 rounded-full" />
             </div>
             <div className="ml-2 text-sm font-semibold">{member[0]?.name}</div>
             {/* <div className="flex items-center justify-center ml-auto text-xs text-white bg-red-500 h-4 w-4 rounded leading-none">2</div> */}
