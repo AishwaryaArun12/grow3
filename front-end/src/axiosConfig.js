@@ -51,7 +51,7 @@ instance.interceptors.response.use(
         
         if((!localStorage.getItem('loginUser') && !localStorage.getItem('loginAdmin')) || error.response.data.message == 'Admin blocked' ){
             
-            if(window.location.href == `${mainUrl}/login` || window.location.href == `${mainUrl}/signup` || window.location.href.startsWith(`${mainUrl}/selectuser/?id=`) ){
+            if(window.location.href == `${mainUrl}/login` || window.location.href == `${mainUrl}/signup` || window.location.href == `${mainUrl}/otp` || window.location.href == `${mainUrl}/changepassword` || window.location.href == `${mainUrl}/forgotpassword` ||  window.location.href.startsWith(`${mainUrl}/selectuser/?id=`) ){
                 throw new Error(error.response?.status)
             }
             localStorage.removeItem('loginUser');

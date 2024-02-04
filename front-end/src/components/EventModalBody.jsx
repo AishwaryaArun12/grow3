@@ -98,8 +98,9 @@ const EventModalBody = ({close,updatePost,ePost}) => {
                       getDownloadURL(ref(storage, pathImagesRef))
                   .then(async(url) => {
                     const file = url;
-                     const result =  await axios.patch('/event/edit_event',{...data,id:ePost._id,file,startTime,endTime,userId : localStorage.getItem('id'),speakers});
-                    if(updatePost){
+                     const result =  await axios.patch('/event/edit_event',{...data,id:ePost._id,media:file,startTime,endTime,userId : localStorage.getItem('id'),speakers});
+                    console.log(result,url,'hhhhhhhhh')
+                     if(updatePost){
                       updatePost();
                     }
                     close();    
@@ -218,7 +219,7 @@ const EventModalBody = ({close,updatePost,ePost}) => {
       <label className='width-4/5 h-40 p-2 cursor-pointer' htmlFor="fileInput">
         {selectedFile ? (
           // Display the selected image
-          <img src={typeof selectedFile == 'string' ? `${URL}/${selectedFile?.replace('uploads\\', '')}` : window.URL.createObjectURL(selectedFile)} alt="Selected" className="max-h-52 w-full" />
+          <img src={typeof selectedFile == 'string' ? `${selectedFile?.replace}` : window.URL.createObjectURL(selectedFile)} alt="Selected" className="max-h-52 w-full" />
         ) : (
           // Display a placeholder or an icon
           <span className="block text-center border w-full h-40 p-5">Click to select an image</span>

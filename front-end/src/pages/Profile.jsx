@@ -354,11 +354,11 @@ const parseDate = (dateString) => {
                         <h4 className="text-xl p-3 font-semibold tracking-tight text-blue-900">
                           <div className='flex'>
                           <p>Event By -</p>
-                         <div className='flex mt-5 w-full'>
-                                <div className='w-16 h-14 mt-3 overflow-hidden rounded-full border-2 border-gray-300 shadow-md'>
-                                <img className='w-full h-full object-cover bg-transparent' src={ event.userId?.profileImg ? `${URL}/${event.userId.profileImg.replace('uploads\\', '')}` : defaultProfile} alt="" />
+                         <div className='flex mt-1 w-full'>
+                                <div className='w-16 h-14 mt-6 overflow-hidden rounded-full border-2 border-gray-300 shadow-md'>
+                                <img className='w-full h-full object-cover bg-transparent' src={ event.userId?.profileImg ? `${event.userId.profileImg}` : defaultProfile} alt="" />
                                 </div>
-                                <div className='h-auto rounded-full  w-full ml-1 p-2 shadow-md border-gray-300 border-2 hover:bg-gray-200'>
+                                <div className='h-auto rounded-full  w-full ml-1 p-4 shadow-md border-gray-300 border-2 hover:bg-gray-200'>
                                 <p className=' font-mono'>{event.userId.name}</p>
                                 <p className=' font-thin text-base'>{event.userId.headline}</p>
                                 </div>
@@ -404,11 +404,11 @@ const parseDate = (dateString) => {
                         <h4 className="text-xl p-3 font-semibold tracking-tight text-blue-900">
                           <div className='flex'>
                           <p>Event By -</p>
-                         <div className='flex mt-5 w-full'>
-                                <div className='w-16 h-14 mt-3 overflow-hidden rounded-full border-2 border-gray-300 shadow-md'>
-                                <img className='w-full h-full object-cover bg-transparent' src={ event.userId?.profileImg ? `${URL}/${event.userId.profileImg.replace('uploads\\', '')}` : defaultProfile} alt="" />
+                         <div className='flex mt-1 w-full'>
+                                <div className='w-16 h-14 mt-6 overflow-hidden rounded-full border-2 border-gray-300 shadow-md'>
+                                <img className='w-full h-full object-cover bg-transparent' src={ event.userId?.profileImg ? `${event.userId.profileImg}` : defaultProfile} alt="" />
                                 </div>
-                                <div className='h-auto rounded-full  w-full ml-1 p-2 shadow-md border-gray-300 border-2 hover:bg-gray-200'>
+                                <div className='h-auto rounded-full  w-full ml-3  p-4 shadow-md border-gray-300 border-2 hover:bg-gray-200'>
                                 <p className=' font-mono'>{event.userId.name}</p>
                                 <p className=' font-thin text-base'>{event.userId.headline}</p>
                                 </div>

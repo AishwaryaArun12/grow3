@@ -58,7 +58,7 @@ const Partners = () => {
   ]
     const [buttons,setButtons] = useState(initialButton);
     const profileIcon = (<div className='w-14 h-12  overflow-hidden rounded-full border-2 border-gray-300 shadow-md'>
-    <img className='w-full h-full object-cover bg-transparent' src={ user?.profileImg ? `${URL}/${user.profileImg.replace('uploads\\', '')}` : defaultProfile} alt="" />
+    <img className='w-full h-full object-cover bg-transparent' src={ user?.profileImg ? `${user.profileImg}` : defaultProfile} alt="" />
   </div>)
   
     const buttonContent = (<div className='flex mt-5 w-full'>

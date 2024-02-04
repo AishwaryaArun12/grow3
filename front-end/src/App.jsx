@@ -68,7 +68,7 @@ const App = () => {
         <Route exact path='/admin/home' element={<HomeAdmin />}/>
      
       
-        <Route exact path='/forgotemail' element={<Forgot_Email />}/>
+        <Route exact path='/forgotpassword' element={<Forgot_Email />}/>
       
      
         <Route exact path='/changepassword' element={<ChangePassword />}/>

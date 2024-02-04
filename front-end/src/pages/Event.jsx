@@ -16,12 +16,12 @@ const Event = () => {
     const [registered,setRegistered] = useState([]);
 
     const profileIcon = (<div className='w-14 h-12  overflow-hidden rounded-full border-2 border-gray-300 shadow-md'>
-    <img className='w-full h-full object-cover bg-transparent' src={ user?.profileImg ? `${URL}/${user.profileImg.replace('uploads\\', '')}` : defaultProfile} alt="" />
+    <img className='w-full h-full object-cover bg-transparent' src={ user?.profileImg ? `${user.profileImg}` : defaultProfile} alt="" />
   </div>)
   
     const buttonContent = (<div className='flex mt-5 w-full'>
     <div className='w-14 h-12  overflow-hidden rounded-full border-2 border-gray-300 shadow-md'>
-      <img className='w-full h-full object-cover bg-transparent' src={ user?.profileImg ? `${URL}/${user.profileImg.replace('uploads\\', '')}` : defaultProfile} alt="" />
+      <img className='w-full h-full object-cover bg-transparent' src={ user?.profileImg ? `${user.profileImg}` : defaultProfile} alt="" />
     </div>
     <div className='h-12 rounded-full w-full ml-1 p-2 shadow-md border-gray-300 border-2 hover:bg-gray-200'>
       <p>Start a post...</p>
@@ -66,7 +66,7 @@ const Event = () => {
         <div className='h-16'>
             <Nav />
         </div>
-        <div className='lg:flex sm:block w-full  flex-1'  style={{height : '730px'}}>
+        <div className='lg:flex sm:block w-full  flex-1'  >
       <div className='bg-gray-100 fixed  w-3/12 mr-3 py-4 h-full  hidden lg:block ' >
               <div className='bg-white w-11/12 m-4 p-3 h-40 border-2 rounded-xl'>
             
@@ -91,7 +91,7 @@ const Event = () => {
                     <div className="w-full p-2 rounded-lg shadow-xl  bg-gray-300">
                     <img
                         className="object-cover w-full  lg:h-56"
-                        src={`${URL}/${event?.media?.replace('uploads\\', '')}`}
+                        src={`${event?.media}`}
                         alt="image"
                     />
                     <div className="pl-2">
@@ -122,14 +122,15 @@ const Event = () => {
                     <h1 className='text-lg font-semibold'>Suggested Events</h1>
                 </div>
                 <div className='grid grid-cols-2 md:grid-cols-3 gap-2 lg:gap-4 bg-gray-100'>
-                    {events.length != 0 && 
-                    events.map(event=>
-                        <div className='h-72 lg:h-96 max-w-full rounded-lg'>
+                    {events.length != 0 ? 
+                    events.map(event=>{
+                        if(event?.userId?._id != localStorage.getItem('id')){   
+                          return( <div className='h-72 lg:h-96 max-w-full rounded-lg'>
                     <div className="w-full p-2 rounded-lg shadow-xl  bg-gray-300">
                     <div className='lg:h-56 h-28'>
                     <img
                         className="object-cover w-full  lg:h-56"
-                        src={`${URL}/${event?.media?.replace('uploads\\', '')}`}
+                        src={`${event?.media}`}
                         alt="image"
                     />
                     </div>
@@ -152,8 +153,9 @@ const Event = () => {
                         </div>
                     </div>
                     </div>
-                    </div>
-                    )}
+                    </div>)
+                        }
+                      }): <p>No Events</p>}
 
                 </div>
             </div>
