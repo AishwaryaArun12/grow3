@@ -39,6 +39,7 @@ const Event = () => {
    async function getAllEvents(){
     try {
       const result =  await axios.get('/event/getallevents');
+      console.log(result,'jjjjj')
     setEvents(result.data.events.filter(event=>!event.attendees.includes(localStorage.getItem('id'))) )
     setRegistered(result.data.events.filter(event=>event.attendees.includes(localStorage.getItem('id'))))
     } catch (error) {
