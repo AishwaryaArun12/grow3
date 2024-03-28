@@ -37,9 +37,13 @@ const Event = () => {
    <p>Event</p>
    </div>)
    async function getAllEvents(){
-    const result =  await axios.get('/event/getallevents');
+    try {
+      const result =  await axios.get('/event/getallevents');
     setEvents(result.data.events.filter(event=>!event.attendees.includes(localStorage.getItem('id'))) )
     setRegistered(result.data.events.filter(event=>event.attendees.includes(localStorage.getItem('id'))))
+    } catch (error) {
+      console.log(error,'dddddddddd')
+    }
  }
    useEffect(()=>{
     
