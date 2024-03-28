@@ -37,7 +37,7 @@ const Post = ({post}) => {
         setPosts((prev) => {
           const newposts = prev.map((i) => {
             if (i._id === post._id) {
-              // Use $pull to remove the specific id from the likes array
+              
               return { ...i, likes: i.likes.filter((likeId) => likeId !== id) };
             } else {
               return i;
@@ -58,8 +58,10 @@ const Post = ({post}) => {
         setPosts((prev) => {
           const newpost =  prev.map((i) => {
             if (i._id === post._id) {
-              // Use $pull to remove the specific id from the likes array
-              return { ...i, likes: [...i.likes,id] };
+              if(!i.likes.includes(id)){
+                return { ...i, likes: [...i.likes,id] };
+              }
+              return i;
             } else {
               return i;
             }
