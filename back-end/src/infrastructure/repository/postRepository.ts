@@ -12,7 +12,7 @@ export default class postRepository{
     async edit(id:string, data: object):Promise<boolean | IPost>{
         try {
             
-           const update =  await Post.findOneAndUpdate({_id : id},{$push : data}, {new : true});
+           const update =  await Post.findOneAndUpdate({_id : id},{$addToSet : data}, {new : true});
            
            return update
         } catch (error) {

@@ -86,7 +86,7 @@ const EventModalBody = ({close,updatePost,ePost}) => {
                   if(selectedFile){
                     const desertRef = ref(storage, ePost?.media);
                     deleteObject(desertRef).then(() => {
-                      console.log('deleted successfully')
+                      
                     }).catch((error) => {
                       console.log('error',error)
                     });
@@ -99,7 +99,7 @@ const EventModalBody = ({close,updatePost,ePost}) => {
                   .then(async(url) => {
                     const file = url;
                      const result =  await axios.patch('/event/edit_event',{...data,id:ePost._id,media:file,startTime,endTime,userId : localStorage.getItem('id'),speakers});
-                    console.log(result,url,'hhhhhhhhh')
+                    
                      if(updatePost){
                       updatePost();
                     }

@@ -27,6 +27,7 @@ import Event from './pages/Event'
 import EventDetail from './pages/EventDetail'
 import Partners from './pages/Partners'
 import NotFound from './pages/NotFound'
+import Test from './pages/Test'
 
 const App = () => {
   const {user,setUser} = useContext(AuthContext)
@@ -95,6 +96,7 @@ const App = () => {
       
       
         <Route exact path='/chat' element={<Chat />}/>
+        <Route exact path='/test' element={<Test />}/>
       
       
         <Route exact path='/video/room/:room' element={<VideoRoom />}/>

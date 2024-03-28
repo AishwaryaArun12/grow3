@@ -29,9 +29,8 @@ export default function Example({user,close,userData}) {
       setError('Email should follows the standard email format')
     }else if(!textRegex.test(country.trim()) || country.trim() == "" ||
     !textRegex.test(region.trim()) || region.trim() == "" || 
-    !textRegex.test(location.trim()) || location.trim() == "" || 
-    !textRegex.test(description.trim()) || description.trim() == "" ||
-    !textRegex.test(headline.trim()) || headline.trim() == "" ||
+    !textRegex.test(location.trim()) || location.trim() == "" || description.trim() == "" ||
+     headline.trim() == "" ||
     !textRegex.test(qualification.trim()) || qualification.trim() == "" ){
       setError('Inputs should be valid')
     }else if(!ageRegex.test(age)){

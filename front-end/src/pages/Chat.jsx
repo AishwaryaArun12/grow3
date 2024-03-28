@@ -137,7 +137,6 @@ const Chat = () => {
       </div>
     </div>
     <div className='w-full '>
-    <ChatBox conv={conv}/>
     </div>
 </div>
 </div>;
