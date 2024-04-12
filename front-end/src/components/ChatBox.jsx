@@ -101,7 +101,7 @@ const ChatBox = ({conv}) => {
                 <div className='p-1 w-full'> 
                 <div className="flex flex-row bg-gray-200 items-center w-full hover:bg-gray-100 rounded-xl p-2">
                 <div className="flex items-center justify-center h-8 w-8 bg-gray-200 rounded-full">
-                <img src={member[0]?.profileImg ? `${URL}/${member[0].profileImg.replace('uploads\\', '')}`: defaultProfile} alt="User Avatar" className="w-8 h-8 rounded-full" />
+                <img src={member[0]?.profileImg ? member[0].profileImg : defaultProfile} alt="User Avatar" className="w-8 h-8 rounded-full" />
                 </div>
                     <div className="ml-2 text-sm font-semibold">{member[0].name}</div>
                     <FaVideo className='ml-auto mr-5 cursor-pointer' onClick={video} size={24}/>

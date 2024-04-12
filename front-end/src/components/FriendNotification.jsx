@@ -42,7 +42,7 @@ const FriendNotification = ({user,userData}) => {
                 <div className='flex my-3'>
                     <div className="flex items-center  bg-slate-100 w-full">
           
-          <img src={i?.profileImg ? `${URL}/${i.profileImg.replace('uploads\\', '')}`: defaultProfile} alt="User Avatar" className="w-12 h-12 rounded-full mx-3" />
+          <img src={i?.profileImg ? i.profileImg : defaultProfile} alt="User Avatar" className="w-12 h-12 rounded-full mx-3" />
           <div className='ml-3'>
             <p className="text-gray-800 font-semibold">{i?.name}</p>
             <p className="text-gray-500 text-sm">{mutual} Mutual Friends</p>
@@ -74,7 +74,7 @@ const FriendNotification = ({user,userData}) => {
                 <div className='flex my-3'>
                     <div className="flex items-center  bg-slate-100 w-full">
           
-          <img src={i?.profileImg ? `${URL}/${i.profileImg.replace('uploads\\', '')}`: defaultProfile} alt="User Avatar" className="w-12 h-12 rounded-full mx-3" />
+          <img src={i?.profileImg ? i.profileImg : defaultProfile} alt="User Avatar" className="w-12 h-12 rounded-full mx-3" />
           <a href={`/user/${i._id}`} className='ml-3 w-3/5'>
             <p className="text-gray-800 font-semibold">{i?.name}</p>
             <p className="text-gray-800 font-semibold">{i?.headline}</p>
@@ -107,7 +107,7 @@ const FriendNotification = ({user,userData}) => {
                 <div className='flex my-3'>
                     <div className="flex items-center  bg-slate-100 w-full">
           
-          <img src={i?.profileImg ? `${URL}/${i.profileImg.replace('uploads\\', '')}`: defaultProfile} alt="User Avatar" className="w-12 h-12 rounded-full mx-3" />
+          <img src={i?.profileImg ? i.profileImg : defaultProfile} alt="User Avatar" className="w-12 h-12 rounded-full mx-3" />
           <a href={`/user/${i._id}`} className='ml-3 w-3/5'>
             <p className="text-gray-800 font-semibold">{i?.name}</p>
             <p className="text-gray-800 font-semibold">{i?.headline}</p>
