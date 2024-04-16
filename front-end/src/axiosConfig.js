@@ -11,7 +11,7 @@ instance.interceptors.request.use((config) => {
     const token = localStorage.getItem('token');
     const id = localStorage.getItem('id'); 
     localStorage.setItem('resend',true)
-
+    console.log(config.headers,id,'rrrrrrrrrr')
     if (token) {
         config.headers['authorization'] = 'Bearer ' + token;
     }
@@ -25,6 +25,7 @@ instance.interceptors.request.use((config) => {
 
 instance.interceptors.response.use(
     (response) => {
+        console.log(response,'g')
         let id;
         if (response.data.id) {
             id = response.data.id || localStorage.getItem('id');
@@ -47,10 +48,10 @@ instance.interceptors.response.use(
         return response;
     },
     async (error) => {
+        
         const originalRequest = error.config;
         
         if((!localStorage.getItem('loginUser') && !localStorage.getItem('loginAdmin')) || error.response.data.message == 'Admin blocked' ){
-            
             if(window.location.href == `${mainUrl}/login` || window.location.href == `${mainUrl}/signup` || window.location.href == `${mainUrl}/otp` || window.location.href == `${mainUrl}/changepassword` || window.location.href == `${mainUrl}/forgotpassword` ||  window.location.href.startsWith(`${mainUrl}/selectuser/?id=`) ){
                 throw new Error(error.response?.status)
             }
@@ -59,7 +60,7 @@ instance.interceptors.response.use(
             localStorage.removeItem('refreshToken')
             // window.location.href = '/login';
              
-            return ;
+            return error;
         }else{
             if (error.response.status === 401 && localStorage.getItem('resend') == 'true') {
                 originalRequest._retry = true;

@@ -7,6 +7,9 @@ const jwtSecret = process.env.JWT_SECRET;
 
 export const userBlock = async(req : Request,res : Response,next : NextFunction)=>{
    try {
+    if(req.query.otp== 'true'){
+      next();
+    }
     const token = req.headers.authorization?.toString().split(' ')[1];
     if(!token){
       res.status(401).json({ message: 'Unauthorised' });

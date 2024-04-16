@@ -38,9 +38,9 @@ export default function SignUp() {
     }else if(data.password != data.conformPassword){
       setError3('Password and Confirm password is not matching!');
     }else {
-      try {
+      
         const res = await axios.post('/newUser',data);
-        
+        console.log(res,'ssssssssssss')
       if(res.status == 201){
         localStorage.setItem('id', res.data.id)
         try {
@@ -50,17 +50,14 @@ export default function SignUp() {
           setError4('Please provide valid email');
         }
         navigate('/otp')
-      }
-      } catch (error) {
-        console.log(error.response);
-        if(error.response.status == 409 && error.response.data.data == 'User already exists but not verified' ){
+      }else if(res.response.status == 409 && res.response.data.data == 'User already exists but not verified' ){
           navigate('/otp');
-        }else if(error.response.status == 409){
+        }else if(res.response.status == 409){
           setError4('User already exists');
         }else{
           setError4('Sorry, Something went wrong.')
         }
-      }
+      
     }
   }
 
