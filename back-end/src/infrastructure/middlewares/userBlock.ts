@@ -7,8 +7,18 @@ const jwtSecret = process.env.JWT_SECRET;
 
 export const userBlock = async(req : Request,res : Response,next : NextFunction)=>{
    try {
-    if(req.query.otp== 'true'){
-      next();
+
+    if(req.query.otp == 'true'){
+      const id = req.headers['id'] as string;
+      
+      if(id){
+        next();
+        return;
+      }else{
+        res.status(500).json({error: 'NO id'})
+        return
+      }
+      
     }
     const token = req.headers.authorization?.toString().split(' ')[1];
     if(!token){

@@ -59,10 +59,13 @@ export class userRepository{
         return result;
     }
     async getUser(id : string): Promise<User>{
-
-        const user = (await Users.findById(id).populate('pendings').populate('requests').populate('followers').populate('primium.subscriptionId'));
-        
+        try {
+            const user = (await Users.findById(id).populate('pendings').populate('requests').populate('followers').populate('primium.subscriptionId'));
         return user;
+        } catch (error) {
+            return error;
+        }
+        
     }
     async getUserByEmail(email: string): Promise<User>{
         const user = await Users.findOne({email});

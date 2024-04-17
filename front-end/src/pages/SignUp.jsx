@@ -51,7 +51,8 @@ export default function SignUp() {
         }
         navigate('/otp')
       }else if(res.response.status == 409 && res.response.data.data == 'User already exists but not verified' ){
-          navigate('/otp');
+        localStorage.setItem('id', res.response.data.id)  
+        navigate('/otp');
         }else if(res.response.status == 409){
           setError4('User already exists');
         }else{

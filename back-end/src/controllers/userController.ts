@@ -66,9 +66,9 @@ export class userController {
                 return;
             }
             const user = await this.UserService.getUser(id)
-
             res.status(200).json({ user, id: user._id });
         } catch (error) {
+            console.log(error,'ffffffff')
             res.status(401).json(error);
         }
     }

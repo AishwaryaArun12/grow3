@@ -22,7 +22,7 @@ export default function Otp() {
             const fetchUser = async () => {
               try {
                 const response = await axios.get('/getUser/?otp=true');
-            console.log(response,'kkkkkkkkkkkkkkkk')
+            
                 const otpExpire = new Date(response?.data?.user?.otpExpire);
                 
                 updateTimer(otpExpire);
@@ -38,7 +38,7 @@ export default function Otp() {
           const updateTimer = (otpExpire) => {
             const currentTime = new Date(Date.now())
             const time = Math.max(otpExpire.getTime() - currentTime.getTime(), 0);
-            console.log(time,'lllllll')
+           
             if(time == 0){
                 clearInterval(interval);
             }else{
