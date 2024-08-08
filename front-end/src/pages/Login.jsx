@@ -74,7 +74,7 @@ export default function Login() {
        
         <div className="m-6 lg:m-0 flex  items-center">
                     <img
-                      className="h-fit w-16 sm:m-1  rounded-full "
+                      className="h-16 w-16 sm:m-1  rounded-full "
                       src={GROW3}
                       alt="Your Company"
                     />
