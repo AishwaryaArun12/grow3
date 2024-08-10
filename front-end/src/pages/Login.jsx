@@ -41,8 +41,8 @@ export default function Login() {
           setError('Something went wrong, Try again later some time.')
         }
       }, 2000);
-     }else if(result?.data.res == 'verified'){
-      if(result.data.id == 'loginAdmin'){
+     }else if(result?.data?.res == 'verified'){
+      if(result?.data?.id == 'loginAdmin'){
         localStorage.setItem('loginAdmin', true);
       localStorage.setItem('id', result.data.id); 
       navigate('/admin/home');
