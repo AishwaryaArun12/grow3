@@ -40,7 +40,7 @@ export default class eventRepository{
         try {
             
             const result = await Event.find({'userId': { $in: await Users.find({ active: true }).distinct('_id') }}).populate('userId').sort({startTime : -1})
-              
+              console.log(result,'dddd');
             return result
         } catch (error) {
             console.log(error)

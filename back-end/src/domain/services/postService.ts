@@ -21,8 +21,8 @@ export default class postService{
     delete(id:string):Promise<boolean>{
         return this.postUseCase.delete(id);
     }
-    getAllPosts(page:number,skip:number):Promise<IPost[]>{
-        return this.postUseCase.getAllPosts(page,skip)
+    getAllPosts(page:number):Promise<IPost[]>{
+        return this.postUseCase.getAllPosts(page)
     }
     getPost(id:string):Promise<IPost[]>{
         return this.postUseCase.getPost(id);

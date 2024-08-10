@@ -27,14 +27,13 @@ const Posts = () => {
   
   return (
     <div className='' >
-        <div className='relative '>
-            <img className='absolute z-0' src={homeBg} alt="" />
-            
-        </div>
-        <div>
-        <h2 className='relative lg:pt-36 pt-28 lg:pb-44 pb-5 px-4 lg:mb-4 text-3xl font-bold text-white text-center  
-        tracking-tight  sm:text-3xl'>Innovation thrives on collaboration. Connect, create, conquer.</h2>
-        </div>
+        <div className="relative h-96">
+  <img className="absolute inset-0 w-full h-full object-cover" src={homeBg} alt="" />
+  <h2 className="relative z-10 pt-28 pb-5 px-4 text-3xl font-bold text-white text-center tracking-tight sm:text-3xl">
+    Innovation thrives on collaboration. Connect, create, conquer.
+  </h2>
+</div>
+       
         {posts?.length !== 0 ? (
         <div className='m-1'>
         {posts?.map((post) => (

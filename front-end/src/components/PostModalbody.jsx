@@ -27,23 +27,38 @@ const PostModalbody = ({close,ePost}) => {
       }
     },[])
     const handleSubmit = async()=>{
+     
       if(postImg || description && description?.trim() != ''){
-        try {
-          const imageRef = ref(storage, postImg.name);
-    const pathImagesRef = ref(storage, `images/${postImg.name}`);
-    
-    uploadBytes(pathImagesRef, postImg).then((snapshot) => {
-      console.log('Uploaded a blob or file!',snapshot);
-      getDownloadURL(ref(storage, pathImagesRef))
-  .then(async(url) => {
-    const file = url;
-          const res = await axios.post('/post/create',{file,description})
-          getAllPosts();
-  })
-    });
-          
-        } catch (error) {
-          setError(error.message)
+        if(postImg?.name){
+
+          try {
+            const imageRef = ref(storage, postImg.name);
+      const pathImagesRef = ref(storage, `images/${postImg.name}`);
+      
+      uploadBytes(pathImagesRef, postImg).then((snapshot) => {
+        console.log('Uploaded a blob or file!',snapshot);
+        getDownloadURL(ref(storage, pathImagesRef))
+    .then(async(url) => {
+      const file = url;
+            const res = await axios.post('/post/create',{file,description})
+            
+            getAllPosts();
+    })
+      });
+            
+          } catch (error) {
+            console.log(error,'sssss');
+            setError(error.message)
+          }
+        }else{
+          try {
+            const res = await axios.post('/post/create',{description})
+
+            getAllPosts();
+          } catch (error) {
+            console.log(error,'sssss');
+            setError(error.message)
+          }
         }
       }else{
         setError('Add something which you want to share')

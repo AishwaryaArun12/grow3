@@ -21,7 +21,7 @@ export default class postController {
         try {
             const page = parseInt(req.params.page);
             const skip = parseInt(req.params.skip);
-;            const result = await this.postService.getAllPosts(page,skip);
+;            const result = await this.postService.getAllPosts(page);
             res.status(200).json({message:'Posts retrieved successfully',posts:result})
         } catch (error) {
             res.status(500).json(error)

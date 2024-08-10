@@ -40,9 +40,9 @@ export default class postRepository{
         }
        
     }
-    async getAllPosts(page:number,skip:number):Promise<IPost[]>{
+    async getAllPosts(page:number):Promise<IPost[]>{
         try {
-            
+            const count = await Post.countDocuments({'userId': { $in: await Users.find({ active: true }).distinct('_id') }})
             const result = await Post.find({'userId': { $in: await Users.find({ active: true }).distinct('_id') }}).populate('userId') .populate({
 
                 path: 'comments',
@@ -58,8 +58,8 @@ export default class postRepository{
                     path: 'reply.mention',
                   },
                 ],
-              }).sort({time : -1}).skip(skip).limit(page*2);
-              
+              }).sort({time : -1}).limit(page*2);
+              console.log(count,'count')
             return result
         } catch (error) {
             console.log(error)

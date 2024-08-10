@@ -114,17 +114,23 @@ const Post = ({post}) => {
     }
   }
   const remove = async()=>{
+
+   if(post.media){
     const desertRef = ref(storage, post.media);
     deleteObject(desertRef).then(() => {
       console.log('deleted successfully')
     }).catch((error) => {
       console.log('error',error)
     });
+   }
+    console.log('edlejkljted')
     try {
       if(post.media){
-        await axios.delete(`/post/delete/${post._id}/${post.media}`);
+        const res = await axios.delete(`/post/delete/${post._id}/${post.media}`);
+        console.log(res.data);
       }else{
-        await axios.delete(`/post/delete/${post._id}/up/media`);
+        const res = await axios.delete(`/post/delete/${post._id}/up/media`);
+        console.log(res.data,'sssssxsxsxs');
       }
       getAllPosts();
     } catch (error) {

@@ -11,10 +11,11 @@ export default function Post ({children}){
     const [page,setPage] = useState(1);
     async function getAllPosts(){
       
-        axios.get(`/post/getallposts/${page}/${0}`).then(res=>{         
+        axios.get(`/post/getallposts/${page}/${0}`).then(res=>{     
+            
           setPosts(res?.data?.posts);
         }).catch(err=>{
-          console.log(err);
+          console.log(err,'eeeee');
           localStorage.removeItem('id')
           localStorage.removeItem('token')
           if(err.status == 401){

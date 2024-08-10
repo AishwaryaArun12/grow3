@@ -31,7 +31,8 @@ export default function Login() {
         toast.error('Sorry, Invalid password');
       }else{
         const result = await axios.post('/login',{password,email});
-      if(result?.data.res == 'user not verified'){
+        console.log(result);
+      if(result?.data?.res == 'user not verified'){
       setError('Sorry, Validation not completed, Please complete otp validation.');
       setTimeout(async() => {
         try {
@@ -44,7 +45,7 @@ export default function Login() {
      }else if(result?.data?.res == 'verified'){
       if(result?.data?.id == 'loginAdmin'){
         localStorage.setItem('loginAdmin', true);
-      localStorage.setItem('id', result.data.id); 
+      localStorage.setItem('id', result.data?.id); 
       navigate('/admin/home');
       }
       else{
@@ -53,10 +54,18 @@ export default function Login() {
       navigate('/');
       }
      }
+     
+     else if(result?.response?.data?.res == 'invalid credentials'){
+      console.log('qqqqqqqq');
+      setError('** Invalid credentials')
+     }
+     else if(result?.response?.data?.res == 'user blocked'){
+      setError('Sorry, Access blocked by admin')
+     }
       }
       
     } catch (error ) {
-      console.log(error.message);
+      console.log(error.message,'hhhjjkjkbh');
       if(error.message == 404){
         setError('** Invalid credentials')
       }else if(error.message == 403){
@@ -69,10 +78,10 @@ export default function Login() {
   return (
     <div className='flex'>
      
-      <div className="lg:flex  h-fit border sm:w-full border-gray-200 m-2 flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+      <div className="lg:flex  h-[760px] items-center border sm:w-full border-gray-200  flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm flex justify-center items-center">
        
-        <div className="m-6 lg:m-0 flex  items-center">
+        <div className="m-6 lg:m-0 flex items-center justify-center">
                     <img
                       className="h-16 w-16 sm:m-1  rounded-full "
                       src={GROW3}
@@ -152,7 +161,7 @@ export default function Login() {
           </p>
         </div>
       </div>
-      <div className='hidden  xl:block w-auto lg:flex h-screen min-h-screen flex-1 flex-col justify-center'>
+      <div className='hidden  xl:block w-auto lg:flex min-h-screen flex-1 flex-col justify-center'>
   <img className='h-screen'  src={loginBg} alt="" />
 </div>
 

@@ -18,8 +18,8 @@ export default class postUseCase{
     delete(id:string): Promise<boolean>{
         return this.postRepository.delete(id);
     }
-    getAllPosts(page:number,skip:number):Promise<IPost[]>{
-        return this.postRepository.getAllPosts(page,skip);
+    getAllPosts(page:number):Promise<IPost[]>{
+        return this.postRepository.getAllPosts(page);
     }
     getPost(id: string):Promise<IPost[]>{
         return this.postRepository.getPost(id);
