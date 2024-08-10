@@ -70,7 +70,7 @@ export default function Login() {
     <div className='flex'>
      
       <div className="lg:flex  h-fit border sm:w-full border-gray-200 m-2 flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm flex">
+        <div className="sm:mx-auto sm:w-full sm:max-w-sm flex justify-center items-center">
        
         <div className="m-6 lg:m-0 flex  items-center">
                     <img
