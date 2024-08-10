@@ -1,13 +1,14 @@
 {
     "compilerOptions": {
-        "types": ["express-session"],
+        "types": ["@types/express-session"],
         "module": "CommonJS",
         "baseUrl": "./src",
         "outDir": "./dist",
         "sourceMap": true,
         "noImplicitAny": true,
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "target": "ES6"
     },
-    "include": ["src/**/*" , "typings.d.ts"],
-    "exclude": ["node_modules"] 
+    "include": ["src/**/*", "typings.d.ts"],
+    "exclude": ["node_modules"]
 }
